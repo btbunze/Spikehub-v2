@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState,useEffect} from 'react'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import HomePage from './pages/index'
+import TournamentsPage from './pages/tournaments'
+import ContentPage from './pages/content'
+import Header from './components/header'
+import Footer from './components/footer'
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Switch>
+          <Route path exact = '/'>
+            <Header/>
+            <HomePage></HomePage>
+          </Route>
+          <Route path = '/tournaments'>
+            <Header mainPath = "tournaments"/>
+            <TournamentsPage></TournamentsPage>
+          </Route>
+          <Route>
+            <Header mainPath = "content"/>
+            <ContentPage></ContentPage>
+          </Route>
+        </Switch>
+      </Router>
+
+      <Footer/>
+    </>
+
   );
 }
 
