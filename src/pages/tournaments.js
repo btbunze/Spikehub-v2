@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {BrowserRouter as Router, Route, Switch, Link, useRouteMatch} from 'react-router-dom'
+import {firebase} from '../firebase/config'
+import {useCollection} from 'react-firebase-hooks/firestore'
+
 import SearchBar from '../components/search-bar'
 import Button from '../components/button'
 import UpcomingCard from '../components/upcoming-card'
@@ -8,21 +11,70 @@ import tourneyIcon from '../assets/ex-tourney-icon.png'
 
 const TournamentsPage = () => {
 
+    const db = firebase.firestore()
+
     const [currentTab, setCurrentTab] = useState(window.location.pathname.split("/")[2])
-    const [tournaments, setTournaments] = useState(null)
+    const [tournaments, loadingTournaments , error] = useCollection(db.collection('tournaments'))
+    const [upcoming, setUpcoming]= useState([])
+    const [past, setPast] = useState([])
     const [keyword, setKeyword] = useState("")
 
     useEffect(() => {console.log(keyword)}, [keyword])
+
+    //whenever tournaments or search keyword changes, reset upcoming and past
+    useEffect(() => {
+        if(tournaments){
+            tournaments.docs.sort((a,b) => {
+                const dateA = new Date(a.data().date.seconds*1000)
+                const dateB = new Date(b.data().date.seconds*1000)
+                if(dateA > dateB){
+                    return 1
+                }
+                else{
+                    return -1
+                }
+            })
+
+            const queriedTournaments = tournaments.docs.filter((tournament) => tournament.data().name.includes(keyword))
+
+            const today = new Date()
+            const yesterday = new Date()
+            yesterday.setDate(today.getDate() - 1)
+
+            setUpcoming(queriedTournaments.filter((tournament) => {
+                return new Date(tournament.data().date.seconds*1000) > today
+            }))
+
+            setPast(queriedTournaments.filter((tournament) => {
+                return new Date(tournament.data().date.seconds*1000) < yesterday
+            }))
+
+            console.log(upcoming.map((a)=> a.data()))
+            console.log(past.map((a)=> a.data()))
+        }
+    },[tournaments,keyword])
+
+    //whenever the keyword or either list changes, filter the respective list
+    // useEffect(() => {
+    //     if(currentTab == "upcoming" && tournaments){
+    //         console.log(tournaments)
+    //         setUpcoming(tournaments.docs.filter((tournament)=> tournament.data().name.includes(keyword))
+    //     }
+    // },[keyword])
+
+
+
+
 
     return (
         <div style = {{backgroundColor: 'var(--red)', minHeight:'calc(100vh - 3rem)', width:'100%', display:'inline-block'}}>
             <section className = "connected-header">
                 <div style = {{display:'flex', justifyContent: 'space-between', height:'100%', padding:'0 1rem'}}>
                     <div style = {{margin:'auto 0'}}>
-                        <Link to = {"/tournaments/upcoming"} className = "link" onClick = {()=> setCurrentTab("upcoming")}>
+                        <Link to = {"/tournaments/upcoming"} className = "link" onClick = {() => setCurrentTab("upcoming")}>
                             <h3 className = {`tournaments-heading ${currentTab == "upcoming" ? "selected" : ""}`}>Upcoming Events</h3>
                         </Link>
-                        <Link to = {"/tournaments/past"} className = "link" onClick = {()=> setCurrentTab("past")}>
+                        <Link to = {"/tournaments/past"} className = "link" onClick = {() => setCurrentTab("past")}>
                             <h3 className = {`tournaments-heading ${currentTab == "past" ? "selected" : ""}`}>Past Events</h3>
                         </Link>
                     </div>
@@ -33,38 +85,51 @@ const TournamentsPage = () => {
                 <Route path = "/tournaments/upcoming" >
                 <section>
                     <div className = "grid four-column" style = {{margin: '1rem 0'}}>
-                            <UpcomingCard
-                                img = {tourneyIcon}
-                                tournamentName = "The 2021 Winter Slam Spectacular"
-                                date = "January 2, 2021"
-                            />
-                            <UpcomingCard/>
-                            <UpcomingCard/>
-                            <UpcomingCard/>
+                            {upcoming && upcoming.map((tournament) => (
+                                <>
+                                <UpcomingCard
+                                    img = {tournament.data().img}
+                                    tournamentName = {tournament.data().name}
+                                    date = {new Date(tournament.data().date.seconds*1000).toDateString()}
+                                    slug = {tournament.data().slug}
+                                />
+                                    {/*<button onClick = {() => db.collection('tournaments').doc('example-current').set(tournament.data())}> BUTTON</button>*/}
+                                </>
+                            ))}
                     </div>
                 </section>
                 </Route>
                 <Route path = "/tournaments/past">
                     <section style = {{padding:0}}>
                         <table className = "past-table">
-                            <tr>
-                                <th>Event Name</th>
-                                <th>Location</th>
-                                <th>Date</th>
-                                <th># Teams</th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td>Event</td>
-                                <td>Loc</td>
-                                <td>Date</td>
-                                <td>#</td>
-                                <td><Button
-                                    size = "medium"
-                                    color = 'red'
-                                    label = 'See More'
-                                /></td>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Location</th>
+                                    <th>Date</th>
+                                    <th># Teams</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {past && past.map((tournament)=>(
+                                    <tr>
+                                        <td>{tournament.data().name}</td>
+                                        <td>{tournament.data().location}</td>
+                                        <td>{new Date(tournament.data().date.seconds*1000).toDateString()}</td>
+                                        <td>{tournament.data().numTeams}</td>
+                                        <td>
+                                            <Link className = "link" to = {`/tournament?name=${tournament.data().slug}`}>
+                                                <Button
+                                                    size = "medium"
+                                                    color = 'red'
+                                                    label = 'See More'
+                                                />
+                                            </Link>
+                                        </td>
+                                    </tr>   
+                                ))}
+                            </tbody>
                         </table>
                     </section>
                 </Route>

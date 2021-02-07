@@ -1,9 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-const UpcomingCard = ({tournamentName, date, img, slug}) => {
+const TournamentCard = ({tournamentName, date, img, slug}) => {
     return (
-        <Link className = "link upcoming-card" to = {`/tournament?name=${slug}`}>
+        <Link className = "link upcoming-card" to = {`/account-dashboard/tournaments/edit?id=${slug}`}>
+                {console.log(img)}
                 <div style = {{backgroundColor:'var(--light-gray)'}}> 
                     <img src = {img || "https://res.cloudinary.com/dicfhqxoo/image/upload/v1612321575/tournament-icon_ydpdbe.png"} style = {{width:'100%', height:'100%', objectFit: 'cover'}}></img>
                 </div>
@@ -15,4 +16,4 @@ const UpcomingCard = ({tournamentName, date, img, slug}) => {
     )
 }
 
-export default UpcomingCard
+export default TournamentCard
