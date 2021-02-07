@@ -45,11 +45,14 @@ const HomePage = () => {
             }
         })
 
-        const soonestDate = new Date(sortedUpcoming[0].data().date.seconds*1000);
+        if(sortedUpcoming.length > 0){
+            const soonestDate = new Date(sortedUpcoming[0].data().date.seconds*1000);
         
-        return sortedUpcoming.filter((tournament) => {
-            return new Date(tournament.data().date.seconds*1000).getTime() == soonestDate.getTime();
-        })
+            return sortedUpcoming.filter((tournament) => {
+                return new Date(tournament.data().date.seconds*1000).getTime() == soonestDate.getTime();
+            })
+        }
+
 
     }
 
@@ -100,14 +103,18 @@ const HomePage = () => {
                     </div>)
                     :
                     <div className = "no-tournaments">
-
-                    <h4 style = {{margin:'0 auto'}}>Come back on <b>{tournaments && formatDate(new Date(getSoonestTournaments(tournaments.docs)[0].data().date.seconds*1000))}</b> for the next event{tournaments && getSoonestTournaments(tournaments.docs).length > 1 ? "s" : null}</h4>
+                    {tournaments && tournaments.length > 0 ?
+                    <>
+                        <h4 style = {{margin:'0 auto'}}>Come back on <b>{formatDate(new Date(getSoonestTournaments(tournaments.docs)[0].data().date.seconds*1000))}</b> for the next event{tournaments && getSoonestTournaments(tournaments.docs).length > 1 ? "s" : null}</h4>
                         <div style = {{marginTop:'2rem', display:'flex', alignItems:'center', justifyContent:'center'}}>
                             {tournaments && getSoonestTournaments(tournaments.docs).map((tournament)=> 
                                 <img src = {tournament.data().img} style = {{width:'10rem', margin:'0 1rem'}}></img>
                             )}
                         </div>
-
+                    </>
+                    :
+                    <h4 style = {{margin:'0 auto'}}>Come back soon for the next event</h4>
+                    }
                     </div>
                 } 
             </section>

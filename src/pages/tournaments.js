@@ -84,53 +84,63 @@ const TournamentsPage = () => {
 
                 <Route path = "/tournaments/upcoming" >
                 <section>
-                    <div className = "grid four-column" style = {{margin: '1rem 0'}}>
-                            {upcoming && upcoming.map((tournament) => (
-                                <>
-                                <UpcomingCard
-                                    img = {tournament.data().img}
-                                    tournamentName = {tournament.data().name}
-                                    date = {new Date(tournament.data().date.seconds*1000).toDateString()}
-                                    slug = {tournament.data().slug}
-                                />
-                                    {/*<button onClick = {() => db.collection('tournaments').doc('example-current').set(tournament.data())}> BUTTON</button>*/}
-                                </>
-                            ))}
-                    </div>
+                    {upcoming && upcoming.length > 0 ? 
+                        <div className = "grid four-column" style = {{margin: '1rem 0'}}>
+                                {upcoming && upcoming.map((tournament) => (
+                                    <>
+                                    <UpcomingCard
+                                        img = {tournament.data().img}
+                                        tournamentName = {tournament.data().name}
+                                        date = {new Date(tournament.data().date.seconds*1000).toDateString()}
+                                        slug = {tournament.data().slug}
+                                    />
+                                        {/*<button onClick = {() => db.collection('tournaments').doc('example-current').set(tournament.data())}> BUTTON</button>*/}
+                                    </>
+                                ))}
+                        </div>
+                        :
+                        <h4 style = {{margin:'2rem auto'}}>No tournaments coming soon!</h4>
+                    }
+
                 </section>
                 </Route>
                 <Route path = "/tournaments/past">
                     <section style = {{padding:0}}>
-                        <table className = "past-table">
-                            <thead>
-                                <tr>
-                                    <th>Event Name</th>
-                                    <th>Location</th>
-                                    <th>Date</th>
-                                    <th># Teams</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {past && past.map((tournament)=>(
+                        {past && past.length > 0 ? 
+                            <table className = "past-table">
+                                <thead>
                                     <tr>
-                                        <td>{tournament.data().name}</td>
-                                        <td>{tournament.data().location}</td>
-                                        <td>{new Date(tournament.data().date.seconds*1000).toDateString()}</td>
-                                        <td>{tournament.data().numTeams}</td>
-                                        <td>
-                                            <Link className = "link" to = {`/tournament?name=${tournament.data().slug}`}>
-                                                <Button
-                                                    size = "medium"
-                                                    color = 'red'
-                                                    label = 'See More'
-                                                />
-                                            </Link>
-                                        </td>
-                                    </tr>   
-                                ))}
-                            </tbody>
-                        </table>
+                                        <th>Event Name</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th># Teams</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {past && past.map((tournament)=>(
+                                        <tr>
+                                            <td>{tournament.data().name}</td>
+                                            <td>{tournament.data().location}</td>
+                                            <td>{new Date(tournament.data().date.seconds*1000).toDateString()}</td>
+                                            <td>{tournament.data().numTeams}</td>
+                                            <td>
+                                                <Link className = "link" to = {`/tournament?name=${tournament.data().slug}`}>
+                                                    <Button
+                                                        size = "medium"
+                                                        color = 'red'
+                                                        label = 'See More'
+                                                    />
+                                                </Link>
+                                            </td>
+                                        </tr>   
+                                    ))}
+                                </tbody>
+                            </table>
+                            :
+                            <h4 style = {{padding:'2rem 0', margin:'0 auto'}}>No past tournaments!</h4>
+                        }
+
                     </section>
                 </Route>
 
