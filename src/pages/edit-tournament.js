@@ -34,7 +34,8 @@ const EditTournamentPage = ({user}) =>{
     const [tempDivision, setTempDivision] = useState("")
     const [tempResults, setTempResults] = useState({})
     const [schedule, setSchedule] = useState([])
-//    const [results, setResults] = useState({})
+    const [results, setResults] = useState({})
+    const [prizes, setPrizes] = useState({})
 
     const [deleteConfirm, setDeleteConfirm] = useState(false)
     const [dataValidationError, setDataValidationError] = useState("")
@@ -42,14 +43,22 @@ const EditTournamentPage = ({user}) =>{
 
     useEffect(()=> {
         if(tournaments && pathname.includes('/tournaments/edit')){
-            const data = tournaments.docs.find((tournament) => tournament.data().slug == query.get("id")).data()
 
-            setInitialTournament({...data, date: new Date(data.date.seconds*1000), regEndDate: new Date(data.regEndDate.seconds*1000)})
+            //in the form of [...slug, id] (slug in multiple parts if "_" in it)
+            const slugIdArray = query.get('id').split("_");
+            
+            const id = `_${slugIdArray[slugIdArray.length-1]}`
+            const slug = slugIdArray.slice(0,slugIdArray.length-1).join("_")
+
+            const data = tournaments.docs.find((tournament) => tournament.data().id == id).data()
+
+
+
+            setInitialTournament({...data, date: new Date(data.date.seconds*1000), regEndDate: new Date(data.regEndDate.seconds*1000), prizes: JSON.parse(JSON.stringify(data.prizes)), results: JSON.parse(JSON.stringify(data.results))})
             setTournamentData({...data, date: new Date(data.date.seconds*1000), regEndDate: new Date(data.regEndDate.seconds*1000)})
             if(data.schedule){
                 setSchedule(data.schedule)
             }
-
         }
     },[tournaments])
 
@@ -64,11 +73,9 @@ const EditTournamentPage = ({user}) =>{
 
     useEffect(() => {
 
-
         let tempPrizes = tournamentData.prizes
         
         if(tournamentData.divisions && tournamentData.prizes){
-            console.log(Object.keys(tournamentData.prizes));
             if(!areEqual(tournamentData.divisions.sort(), Object.keys(tournamentData.prizes).sort())){
                 tournamentData.divisions.forEach((division, index) => {
                     if(!tournamentData.prizes[division]){
@@ -113,7 +120,6 @@ const EditTournamentPage = ({user}) =>{
             let emptyResults = {}
             tournamentData.divisions.forEach((division) => {
                 emptyResults[division] = {1:["","",""],2:["","",""],3:["","",""]}
-                console.log(emptyResults[division][0])
             })
             updateTournament("results", emptyResults)
         }
@@ -125,7 +131,7 @@ const EditTournamentPage = ({user}) =>{
 
 
     useEffect(() => {
-        if(tournamentData.schedule && schedule){
+        if(tournamentData && schedule){
             setTournamentData({
                 ...tournamentData, 
                 schedule: schedule.filter((val)=> !areEqual(val, {time:'', event:''}))
@@ -155,8 +161,13 @@ const EditTournamentPage = ({user}) =>{
 
 
     const addDivision = () => {
-        
+
+        if(tempDivision == "" || (tournamentData.divisions && tournamentData.divisions.find((elt) => elt == tempDivision))){
+            return
+        }
+
         let tempDivisions = []
+
         if(tournamentData.divisions){
             tempDivisions = [...tournamentData.divisions];
         }
@@ -182,14 +193,20 @@ const EditTournamentPage = ({user}) =>{
     }
 
     const updatePrizes = (key, index, value) => {
+        console.log(initialTournament.prizes) 
+        console.log(tournamentData.prizes)
         let tempPrizes = {...tournamentData.prizes};
         tempPrizes[key][index] = value;
        updateTournament("prizes", tempPrizes)
     }
 
     const updateResults= (key, placement, index, value) => {
+        console.log("tournament data:")
+        console.log(tournamentData.results)
+        console.log(initialTournament.results)
         let tempResults = {...tournamentData.results};
         tempResults[key][placement][index] = value;
+        console.log(tempResults)
        updateTournament("results", tempResults)
     }
 
@@ -213,13 +230,8 @@ const EditTournamentPage = ({user}) =>{
                 return
             }
             setDataValidationError(`Make sure your tournament has a ${missingData[0]}`)
-            console.log(missingData)
             return
         }
-        else{
-
-        }
-
 
         tournamentData.slug = tournamentData.name.replaceAll(" ","-").toLowerCase();
         tournamentData.owner = user.uid
@@ -228,9 +240,11 @@ const EditTournamentPage = ({user}) =>{
             tournamentData.host = {type: 'user', id: user.uid}
         }
 
-        const tournamentRef = db.collection('tournaments').doc(tournamentData.slug)
+        if(!tournamentData.id){
+            tournamentData.id = generateID()
+        }
 
-        db.collection('users').doc(user.uid).update({tournaments: [...tournamentList, tournamentData.slug]})
+        const tournamentRef = db.collection('tournaments').doc(tournamentData.id)
 
         if(tempImg){
             const file = tempImg
@@ -250,6 +264,7 @@ const EditTournamentPage = ({user}) =>{
                         tournamentRef.update({...tournamentData,img: res.data.secure_url})
                     }
                     else{
+                        db.collection('users').doc(user.uid).update({tournaments: [...tournamentList, tournamentData.id]})
                         tournamentRef.set({...tournamentData,img: res.data.secure_url})
                     }
                 })
@@ -262,6 +277,7 @@ const EditTournamentPage = ({user}) =>{
                     tournamentRef.update(tournamentData)
                 }
                 else{
+                    db.collection('users').doc(user.uid).update({tournaments: [...tournamentList, tournamentData.id]})
                     tournamentRef.set(tournamentData)
                 }
             })
@@ -270,8 +286,8 @@ const EditTournamentPage = ({user}) =>{
     }
 
     const deleteTournament = () => {
-        db.collection("tournaments").doc(tournamentData.slug).delete()
-        .then(() => db.collection('users').doc(user.uid).update({tournaments: tournamentList.filter((tournamentID) => !(tournamentID == tournamentData.slug))}))
+        db.collection("tournaments").doc(tournamentData.id).delete()
+        .then(() => db.collection('users').doc(user.uid).update({tournaments: tournamentList.filter((tournamentID) => !(tournamentID == tournamentData.id))}))
         .then(history.push("/account-dashboard/tournaments"))
 
     }
@@ -311,7 +327,7 @@ const EditTournamentPage = ({user}) =>{
                 <div className = "dash-input-grid">
                     <div className = "input-container">
                         <label className = "dash-label">Tournament Name</label>
-                        <input className = "dash-input" placeholder = "" id = "name" value = {tournamentData.name} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
+                        <input className = "dash-input" placeholder = "" id = "name" maxlength = "72" value = {tournamentData.name} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
                     </div>
                     <div className = "input-container">
                         <label className = "dash-label">Host</label>
@@ -341,7 +357,7 @@ const EditTournamentPage = ({user}) =>{
                     </div>
                     <div className = "input-container">
                         <label className = "dash-label">Location</label>
-                        <input className = "dash-input" placeholder = "" id = "location" value = {tournamentData.location} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
+                        <input className = "dash-input" placeholder = "" id = "location" maxlength = "35" value = {tournamentData.location} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
                     </div>
                     <div className = "input-container">
                         <label className = "dash-label">Registration Link</label>
@@ -350,7 +366,7 @@ const EditTournamentPage = ({user}) =>{
 
                     <div className = "input-container wide">
                         <label className = "dash-label">Description</label>
-                        <input className = "dash-input" placeholder = "" id = "desc" value = {tournamentData.desc} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
+                        <textarea className = "dash-input" placeholder = "" id = "desc" maxlength = "255" value = {tournamentData.desc} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></textarea>
                     </div>
                     <div className = "input-container wide">
                         <label className = "dash-label">Divisions</label>
@@ -428,7 +444,7 @@ const EditTournamentPage = ({user}) =>{
                 <div className = "dash-input-grid">
                     <div className = "input-container">
                         <label className = "dash-label">Number of Teams</label>
-                        <input className = "dash-input" placeholder = "" id = "numTeams" value = {tournamentData.numTeams} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
+                        <input className = "dash-input" placeholder = "" id = "numTeams" maxlength = "3" value = {tournamentData.numTeams} onChange = {(e) => updateTournament(e.target.id, e.target.value)}></input>
                     </div>
                 </div>
                 {tournamentData.results && Object.keys(tournamentData.results).length > 0 ? 
@@ -440,7 +456,6 @@ const EditTournamentPage = ({user}) =>{
                                 <input className = "dash-input"></input>
                         </div>
                     </div>
-                    {console.log(tournamentData.results)}
 
                     {/*Assignment of value and onChange can be done programatically?*/}
                     {Object.keys(tournamentData.results).map((elt, index) => (

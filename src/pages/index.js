@@ -81,7 +81,7 @@ const HomePage = () => {
                         <DisplayCard
                             imgSrc = {contentIcon}
                             heading = "Community Content"
-                            content = "Find the best podcasts, highlight videos, and tutorials"
+                            content = "Find the best podcasts, highlight videos, and more"
                             link = "/content"
                         />
                 </div>
@@ -96,7 +96,8 @@ const HomePage = () => {
                             <CurrentCard
                                 imgSrc = {tournament.data().img}
                                 heading = {tournament.data().name}
-
+                                bracketLink = {tournament.data().bracketLink}
+                                liveLink = {tournament.data().liveLink}
                             />
                         ))
                         }

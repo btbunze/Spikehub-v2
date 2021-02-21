@@ -17,7 +17,7 @@ body {
 
 
 .content{
-  width: calc(1200px - 4rem);
+  width: calc(1100px - 4rem);
   margin:auto;
 }
 
@@ -257,7 +257,6 @@ a:hover{
 .upcoming-card{
   display:inline-flex;
   flex-direction:column;
-  justify-content:space-between;
   margin: 0 auto;
   width: 90%;
   max-width:15rem;
@@ -376,6 +375,7 @@ table tr:first-child th:last-child{
 
 th{
   background-color:var(--dark-gray);
+  white-space:nowrap;
   text-align:left;
   font-size:1.25rem;
   font-weight:400;
@@ -690,6 +690,11 @@ aside{
   border: 1px solid var(--dark-gray)
 }
 
+textarea{
+  max-width: calc(100% - 1rem - 2px);
+  min-width: calc(100% - 1rem - 2px);
+}
+
 /*form*/
 form{
   display:grid;
@@ -749,6 +754,13 @@ form{
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 } */
+
+/*Errors*/
+.err-msg{
+  color:var(--red);
+  font-size:.8rem;
+}
+
 
 
 /*animation classes*/

@@ -23,7 +23,13 @@ const TournamentPage = ({user}) => {
 
     const db = firebase.firestore()
 
-    const id = useQueryString().get('name');
+    //in the form of [...slug, id] (slug in multiple parts if "_" in it)
+    const slugIdArray = useQueryString().get('id').split("_");
+    
+    const id = `_${slugIdArray[slugIdArray.length-1]}`
+    const slug = slugIdArray.slice(0,slugIdArray.length-1).join("_")
+
+
     const [tournament, loading, error] = useDocument(db.doc(`tournaments/${id}`))
 
     const [isFreeAgentsOpen, setIsFreeAgentsOpen] = useState(true)
@@ -89,7 +95,8 @@ const TournamentPage = ({user}) => {
 
     }
 
-    const addFreeAgent = (isSelf) => {
+    const addFreeAgent = (isSelf, e) => {
+        e.currentTarget.disabled = true;
         let player = {}
 
         if(isSelf){
@@ -99,6 +106,7 @@ const TournamentPage = ({user}) => {
             }
             player = {
                 name: userData.fName + " " + userData.lName,
+                img: userData.img,
                 email: userData.email,
                 phone: userData.phone,
                 rpr: userData.rpr,
@@ -140,9 +148,9 @@ const TournamentPage = ({user}) => {
 
     return (
         <div style = {{minHeight: "calc(100vh - 3rem)", backgroundColor:'var(--light-gray'}}>
-            <div className = "content" style = {{paddingTop: '3rem'}}>
-                <h2 className = "tournaments-heading" style = {{color: '#333333'}}>{tournament && tournament.data().name}</h2>
-                <h4 style = {{display:'inline-block', fontSize: '1.6rem'}}>{tournament && `Hosted By ${hostName}`}</h4>
+            <div className = "content" style = {{padding: '3rem 0rem'}}>
+                <h2 className = "tournaments-heading" style = {{color: '#333333', marginBottom:'1rem'}}>{tournament && tournament.data().name}</h2>
+                <h4 style = {{display:'inline-block', fontSize: '1.6rem', margin:'0'}}>{tournament && `Hosted By ${hostName}`}</h4>
             </div>
             <div className = "content tournament-info-section">
                 <div className = "tournament-sidebar">
@@ -150,17 +158,21 @@ const TournamentPage = ({user}) => {
                     <h3>{tournament && tournament.data().location }</h3>
                     <h3 style = {{fontSize:'1.25rem', marginTop:'.5rem'}}>{tournament && formatDate(new Date(tournament.data().date.seconds*1000))}</h3>
                     <p>{tournament && tournament.data().description}</p>
-                    {tournament && new Date(tournament.data().regEndDate.seconds*1000) > new Date() ?
+                    {tournament && new Date(tournament.data().date.seconds*1000) > new Date() &&
+                    <>
+                        {new Date(tournament.data().regEndDate.seconds*1000) > new Date() ? 
                         <>
-                        {tournament.data().link ? 
-                        <Button size = "large" color = "red" label = "Register" onClick = {tournament && tournament.data().link}></Button>
-                        :
-                        <Button size = "medium" color = "red" label = "No Registration Link" onClick = {tournament && tournament.data().link} isDisabled = {true}></Button>
-                        }                       
-                        <p style = {{fontSize:'.8rem', margin:'.5rem auto 0 auto'}}>Registration ends on <br/><strong>{formatDate(new Date(tournament.data().regEndDate.seconds * 1000))}</strong></p>
+                            {tournament.data().link ? 
+                            <a href = {tournament && tournament.data().link} className = "link" target = "_blank"><Button size = "large" color = "red" label = "Register"></Button></a>
+                            :
+                            <Button size = "medium" color = "red" label = "No Registration Link" onClick = {tournament && tournament.data().link} isDisabled = {true}></Button>                   
+                            }
+                            <p style = {{fontSize:'.8rem', margin:'.5rem auto 0 auto'}}>Registration ends on <br/><strong>{formatDate(new Date(tournament.data().regEndDate.seconds * 1000))}</strong></p>
                         </>
                         :
                         <Button size = "medium" color = "light-gray" label = "Registration Has Ended" onClick = {tournament && tournament.data().link} isDisabled = {true}></Button>
+                        }
+                    </>
                     }
                     
                 </div>
@@ -277,7 +289,7 @@ const TournamentPage = ({user}) => {
                                     <option value = {div}>{div}</option>
                                 ))}
                             </select>
-                            <Button size = "medium" color = "red" label = "Add Yourself" onClick = {()=> addFreeAgent(true)} styles = {{marginBottom:'1rem'}}></Button>
+                            <Button size = "medium" color = "red" label = "Add Yourself" onClick = {(e)=> addFreeAgent(true, e)} styles = {{marginBottom:'1rem'}}></Button>
                             {profileAlert ? <p style = {{margin:'-.5rem 0 .5rem 0', fontSize: '.7rem'}}>Make sure your profile has enough information!</p>:null}
                             <Button size = "medium" color = "red" label = "Enter Player Info" onClick = {() => setManualEntry(true)} styles = {{marginBottom:'1rem', marginRight:'1rem'}}></Button>
                             <Button size = "medium" color = "dark-gray" label = "Cancel" onClick = {() => {setIsOverlayOpen(false); setProfileAlert(false)}}></Button>
@@ -294,8 +306,8 @@ const TournamentPage = ({user}) => {
                             <label className = "dash-label">RPR</label>
                             <input className = "dash-input"  value = {freeAgent.rpr} onChange = {(e)=> setFreeAgent({...freeAgent, rpr: e.target.value})}></input>
                             <div style = {{textAlign:'right'}}>
-                                <Button size = "medium" color = "dark-gray" label = "Back" onClick = {() => setManualEntry(false)} styles = {{marginRight:'1rem'}}></Button>
-                                <Button size = "medium" color = "red" label = "Submit" onClick = {() => addFreeAgent(false)} styles = {{marginBottom:'1rem'}}></Button>
+                                <Button size = "medium" color = "dark-gray" label = {user ? "Back" : "Cancel"} onClick = {() => user ?  setManualEntry(false) : setIsOverlayOpen(false)} styles = {{marginRight:'1rem'}}></Button>
+                                <Button size = "medium" color = "red" label = "Submit" onClick = {(e) => addFreeAgent(false, e)} styles = {{marginBottom:'1rem'}}></Button>
                             </div>
                         </div>
                     </>)}

@@ -9,6 +9,8 @@ import UpcomingCard from '../components/upcoming-card'
 
 import tourneyIcon from '../assets/ex-tourney-icon.png'
 
+import formatDate from '../utilities/formatDate'
+
 const TournamentsPage = () => {
 
     const db = firebase.firestore()
@@ -93,6 +95,7 @@ const TournamentsPage = () => {
                                         tournamentName = {tournament.data().name}
                                         date = {new Date(tournament.data().date.seconds*1000).toDateString()}
                                         slug = {tournament.data().slug}
+                                        id = {tournament.data().id}
                                     />
                                         {/*<button onClick = {() => db.collection('tournaments').doc('example-current').set(tournament.data())}> BUTTON</button>*/}
                                     </>
@@ -121,11 +124,11 @@ const TournamentsPage = () => {
                                     {past && past.map((tournament)=>(
                                         <tr>
                                             <td>{tournament.data().name}</td>
-                                            <td>{tournament.data().location}</td>
-                                            <td>{new Date(tournament.data().date.seconds*1000).toDateString()}</td>
+                                            <td style = {{whiteSpace:'nowrap'}}>{tournament.data().location}</td>
+                                            <td style = {{whiteSpace:'nowrap'}}>{formatDate(new Date(tournament.data().date.seconds*1000))}</td>
                                             <td>{tournament.data().numTeams}</td>
                                             <td>
-                                                <Link className = "link" to = {`/tournament?name=${tournament.data().slug}`}>
+                                                <Link className = "link" to = {`/tournament?id=${tournament.data().slug + tournament.data().id}`}>
                                                     <Button
                                                         size = "medium"
                                                         color = 'red'
