@@ -257,7 +257,10 @@ const TournamentPage = ({user}) => {
                         </button>
                         <div className = {`accordion-content ${isResultsOpen ? "open" : ""}`}>
                             {tournament && tournament.data().results && console.log(tournament.data().results)}
-                            <div className = "grid" style = {{gridTemplateColumns: 'auto auto 1fr', columnGap: '1rem', margin:'0 1rem'}}>
+                            <div className = "grid" style = {{gridTemplateColumns: 'auto auto 1fr 1fr 1fr', columnGap: '1rem', margin:'0 1rem'}}>
+                                <p style = {{gridColumn:'3'}}>Team Name</p>
+                                <p>Player 1</p>
+                                <p>Player 2</p>
                                 {tournament && tournament.data().results && Object.keys(tournament.data().results).sort().map((division) => (
                                 <>
                                     <p className = "schedule-time line-above" style = {{gridRow: 'span 3'}}>{division}</p>
@@ -266,9 +269,11 @@ const TournamentPage = ({user}) => {
                                         
                                         return (<>
                                             <p className = "schedule-time" style = {{fontWeight:'500'}}>{place == 1 && "1st"}{place == 2 && "2nd"}{place == 3 && "3rd"}</p>
-                                            <p className = "schedule-event">{teamArrs[0] + " " + teamArrs[1] + " & " + teamArrs[2]}</p>
+                                            <p className = "schedule-event" >{teamArrs[0]}</p>
+                                            <p className = "schedule-event">{teamArrs[0]}</p>
+                                            <p className = "schedule-event">{teamArrs[0]}</p>                                            
                                         </>)})
-                                    }
+                                        }
                                 </>))}
                             </div>
                         </div>

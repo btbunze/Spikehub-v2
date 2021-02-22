@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import Button from './button'
 
-const DisplayCard = ({imgSrc, altText, heading, content, link}) => {
+const DisplayCard = ({imgSrc, altText, heading, content, link, comingSoon}) => {
     return (
         <div className = "gen-card animated-card">
             <div>
@@ -12,7 +12,7 @@ const DisplayCard = ({imgSrc, altText, heading, content, link}) => {
             </div>
             <div>
                 <Link to = {link}>
-                    <Button size = "large" color = "red" label = "SEE ALL" ></Button>
+                    <Button size = "large" color = "red" label = {comingSoon ? "COMING SOON" : "SEE ALL"} isDisabled = {comingSoon}></Button>
                 </Link>
             </div>
 

@@ -19,7 +19,8 @@ const ContentPage = () => {
                 </h2>
             </div>
             <section>
-                <h2 className = "section-header">Recent Videos</h2>
+                <h4>Coming Soon!</h4>
+            {/*    <h2 className = "section-header">Recent Videos</h2>
                 <h4 className = "section-subheader">See everything you've missed</h4>
                 <div className = "grid two-column" style = {{padding:'1rem 0'}}>
                     <iframe style = {{margin:'auto'}} width="525" height="295" src="https://www.youtube.com/embed/KAPPdgNZenc" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
@@ -39,7 +40,7 @@ const ContentPage = () => {
                         <iframe style ={{margin:'auto'}} src="https://open.spotify.com/embed-podcast/show/0A1vQ9W7EsrwjM0YmZB2tA" width="90%" height="232" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </div>
                     <Button size = "large" color = "red" label = "More Podcasts" styles = {{margin:'1rem'}} ></Button>
-                </Link>
+                </Link>*/}
             </section>
         </div>
     )

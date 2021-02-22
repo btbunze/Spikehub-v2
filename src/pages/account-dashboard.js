@@ -143,7 +143,7 @@ const AcctDashPage = ({user}) => {
                     <div className = "dash-input-grid">
                         <div className = "input-container">
                             <label className = "dash-label">First Name</label>
-                            <input className = "dash-input" placeholder = "" id = "fName" maxlength="10" value = {userData.fName} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
+                            <input className = "dash-input" placeholder = "" id = "fName" value = {userData.fName} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
                         </div>
                         <div className = "input-container">
                             <label className = "dash-label">Last Name</label>
@@ -155,11 +155,11 @@ const AcctDashPage = ({user}) => {
                         </div>
                         <div className = "input-container-skinny">
                             <label className = "dash-label">Phone #</label>
-                            <input className = "dash-input" placeholder = "" id = "phone" value = {userData.phone} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
+                            <input className = "dash-input" placeholder = "" id = "phone" maxLength = "16" value = {userData.phone} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
                         </div>
                         <div className = "input-container-skinny">
                             <label className = "dash-label">RPR</label>
-                            <input className = "dash-input" placeholder = "" id = "rpr" value = {userData.rpr} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
+                            <input className = "dash-input" placeholder = "" id = "rpr" maxLength = "3" value = {userData.rpr} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
                         </div> 
                         <Button size = "medium" color = "red" label = "Save Changes" styles = {{width: 'fit-content', marginTop:'2rem'}} onClick = {submitChanges} isDisabled = {changesSaved}></Button>
                     </div>

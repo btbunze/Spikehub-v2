@@ -258,7 +258,6 @@ a:hover{
   display:inline-flex;
   flex-direction:column;
   margin: 0 auto;
-  width: 90%;
   max-width:15rem;
   text-align:left;
   box-shadow: 0 0 .1rem rgba(0,0,0,.2);
