@@ -52,7 +52,7 @@ const EditTournamentPage = ({user}) =>{
 
             const data = tournaments.docs.find((tournament) => tournament.data().id == id).data()
 
-
+            console.log(tournaments.docs)
 
             setInitialTournament({...data, date: new Date(data.date.seconds*1000).toISOString().slice(0,10), regEndDate: new Date(data.regEndDate.seconds*1000).toISOString().slice(0,10), prizes: JSON.parse(JSON.stringify(data.prizes)), results: JSON.parse(JSON.stringify(data.results))})
             setTournamentData({...data, date: new Date(data.date.seconds*1000).toISOString().slice(0,10), regEndDate: new Date(data.regEndDate.seconds*1000).toISOString().slice(0,10)})
@@ -236,6 +236,7 @@ const EditTournamentPage = ({user}) =>{
         }
 
         tournamentData.date = new Date(tournamentData.date + "T00:00:00")
+        tournamentData.regEndDate = new Date(tournamentData.regEndDate + "T00:00:00")
         tournamentData.slug = tournamentData.name.replaceAll(" ","-").toLowerCase().replaceAll("#","").replaceAll("?","");
         tournamentData.owner = user.uid
 
