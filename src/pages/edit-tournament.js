@@ -305,7 +305,10 @@ const EditTournamentPage = ({user}) =>{
         if(!tournamentData.date || !tournamentData.date.match(/^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
             missingData.push("valid date")
         }
-        if(!tournamentData.date){
+        if(tournamentData.regEndDate && !tournamentData.regEndDate.match(/^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
+            missingData.push("valid registration end date")
+        }
+        if(!tournamentData.location){
             missingData.push("location")
         }
         if(!tournamentData.regEndDate){
