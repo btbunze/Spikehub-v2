@@ -87,7 +87,7 @@ const TournamentsPage = () => {
                 <Route path = "/tournaments/upcoming" >
                 <section>
                     {upcoming && upcoming.length > 0 ? 
-                        <div className = "grid four-column" style = {{margin: '1rem 0', gap:'1rem'}}>
+                        <div className = "grid four-column" style = {{margin: '1rem', gap:'1rem', width: 'calc(100% - 2rem)'}}>
                                 {upcoming && upcoming.map((tournament) => (
                                     <>
                                     <UpcomingCard

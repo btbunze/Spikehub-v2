@@ -26,9 +26,12 @@ const TournamentPage = ({user}) => {
     //in the form of [...slug, id] (slug in multiple parts if "_" in it)
     const slugIdArray = useQueryString().get('id').split("_");
     
+    console.log(slugIdArray)
+
     const id = `_${slugIdArray[slugIdArray.length-1]}`
     const slug = slugIdArray.slice(0,slugIdArray.length-1).join("_")
 
+    console.log(id)
 
     const [tournament, loading, error] = useDocument(db.doc(`tournaments/${id}`))
 
@@ -140,7 +143,6 @@ const TournamentPage = ({user}) => {
             return !(obj.freeAgentId == faID)
         })
 
-        console.log(updatedFreeAgents)
 
         db.doc(`tournaments/${id}`).update({freeAgents: updatedFreeAgents}).then(()=> setIsOverlayOpen(false))
     }
@@ -149,6 +151,7 @@ const TournamentPage = ({user}) => {
     return (
         <div style = {{minHeight: "calc(100vh - 3rem)", backgroundColor:'var(--light-gray'}}>
             <div className = "content" style = {{padding: '3rem 0rem'}}>
+                {tournament && console.log(tournament.data())}
                 <h2 className = "tournaments-heading" style = {{color: '#333333', marginBottom:'1rem'}}>{tournament && tournament.data().name}</h2>
                 <h4 style = {{display:'inline-block', fontSize: '1.6rem', margin:'0'}}>{tournament && `Hosted By ${hostName}`}</h4>
             </div>
@@ -256,7 +259,6 @@ const TournamentPage = ({user}) => {
                             <h3>{isResultsOpen ? "-":"+"}</h3>
                         </button>
                         <div className = {`accordion-content ${isResultsOpen ? "open" : ""}`}>
-                            {tournament && tournament.data().results && console.log(tournament.data().results)}
                             <div className = "grid" style = {{gridTemplateColumns: 'auto auto 1fr 1fr 1fr', columnGap: '1rem', margin:'0 1rem'}}>
                                 <p style = {{gridColumn:'3'}}>Team Name</p>
                                 <p>Player 1</p>
@@ -280,7 +282,6 @@ const TournamentPage = ({user}) => {
                     </>)}
                 </div>
             </div>
-            {console.log(user)}
             {isOverlayOpen ? 
             (<div style = {{width:'100%',height:'100%', position:'fixed', top:0, left:0, backgroundColor: 'rgba(0,0,0,.5)', display:'flex'}}>
                 <div style = {{width:'90%', maxWidth:'15rem', backgroundColor:'white', padding:'2rem', margin:'auto', borderRadius:'.5rem'}}>

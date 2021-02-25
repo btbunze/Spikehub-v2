@@ -54,8 +54,8 @@ const EditTournamentPage = ({user}) =>{
 
 
 
-            setInitialTournament({...data, date: new Date(data.date.seconds*1000), regEndDate: new Date(data.regEndDate.seconds*1000), prizes: JSON.parse(JSON.stringify(data.prizes)), results: JSON.parse(JSON.stringify(data.results))})
-            setTournamentData({...data, date: new Date(data.date.seconds*1000), regEndDate: new Date(data.regEndDate.seconds*1000)})
+            setInitialTournament({...data, date: new Date(data.date.seconds*1000).toISOString().slice(0,10), regEndDate: new Date(data.regEndDate.seconds*1000).toISOString().slice(0,10), prizes: JSON.parse(JSON.stringify(data.prizes)), results: JSON.parse(JSON.stringify(data.results))})
+            setTournamentData({...data, date: new Date(data.date.seconds*1000).toISOString().slice(0,10), regEndDate: new Date(data.regEndDate.seconds*1000).toISOString().slice(0,10)})
             if(data.schedule){
                 setSchedule(data.schedule)
             }
@@ -139,9 +139,11 @@ const EditTournamentPage = ({user}) =>{
         }
     }, [schedule])
 
-    const updateTournament= (key, value)=>{
+    const updateTournament = (key, value)=>{
 
         let val = value;
+
+        console.log('here')
 
         if(key == "host"){
             if(value == user.uid){
@@ -151,10 +153,10 @@ const EditTournamentPage = ({user}) =>{
                 val = {type: "organization", id: value}
             }
         }
-        else if(key == "date" || key == "regEndDate"){
-            val = new Date(value + "T00:00:00")
-        }
-
+        // else if(key == "date" || key == "regEndDate"){
+        //     val = new Date(value + "T00:00:00")
+        // }
+        console.log(val)
 
         setTournamentData({...tournamentData, [key]: val})
     }
@@ -233,7 +235,8 @@ const EditTournamentPage = ({user}) =>{
             return
         }
 
-        tournamentData.slug = tournamentData.name.replaceAll(" ","-").toLowerCase();
+        tournamentData.date = new Date(tournamentData.date + "T00:00:00")
+        tournamentData.slug = tournamentData.name.replaceAll(" ","-").toLowerCase().replaceAll("#","").replaceAll("?","");
         tournamentData.owner = user.uid
 
         if(!tournamentData.host){
@@ -298,8 +301,8 @@ const EditTournamentPage = ({user}) =>{
         if(!tournamentData.name){
             missingData.push("name")
         }
-        if(!tournamentData.date){
-            missingData.push("date")
+        if(!tournamentData.date || !tournamentData.date.match(/^(19|20)\d\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
+            missingData.push("valid date")
         }
         if(!tournamentData.date){
             missingData.push("location")
@@ -343,15 +346,15 @@ const EditTournamentPage = ({user}) =>{
                     </div>
                     <div className = "input-container">
                         <label className = "dash-label">Date</label>
-                        <input className = "dash-input" type = "date" placeholder = "" id = "date"
-                            value = {tournamentData.date && tournamentData.date.toISOString().slice(0,10)} 
-                            onChange = {(e) => updateTournament(e.target.id, e.target.value)}>
+                        <input className = "dash-input" type = "date" placeholder = "yyyy-mm-dd" id = "date"
+                            value = {Object.keys(tournamentData).length > 0 && tournamentData.date && tournamentData.date} 
+                            onChange = {(e) => {updateTournament(e.target.id, e.target.value);}}>
                         </input>
                     </div>
                     <div className = "input-container">
                         <label className = "dash-label">Registration End Date</label>
                         <input className = "dash-input" type = "date" id = "regEndDate" 
-                            value = {Object.keys(tournamentData).length > 0 && (tournamentData.regEndDate ? tournamentData.regEndDate.toISOString().slice(0,10):null)} 
+                            value = {Object.keys(tournamentData).length > 0 && tournamentData.regEndDate && tournamentData.regEndDate} 
                             onChange = {(e) => updateTournament(e.target.id, e.target.value)}>
                         </input>
                     </div>

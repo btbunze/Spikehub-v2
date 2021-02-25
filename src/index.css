@@ -147,8 +147,8 @@ button.disabled:hover{
 /*section*/
 
 section{
-  width: calc(1100px - 2rem);
-  max-width: 80%;
+  max-width: calc(1100px - 2rem);
+  width: 90%;
   margin:3rem auto;
   padding:1rem;
   text-align:center;
@@ -184,7 +184,7 @@ section{
 }
 
 .four-column{
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
 }
 
 /*cards*/
@@ -789,5 +789,14 @@ form{
   to{
     transform:translateY(0);
     opacity:1;
+  }
+}
+
+
+/*media queries*/
+
+@media (max-width: 1000px){
+  .search{
+    display:block;
   }
 }
