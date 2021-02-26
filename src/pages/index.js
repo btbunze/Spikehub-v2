@@ -60,12 +60,12 @@ const HomePage = () => {
         <div style = {{backgroundColor: 'var(--red)', minHeight:'calc(100vh - 3rem)', width:'100%', display:'inline-block'}}>
             <div className = "content">
                 <p className = "small-heading">WELCOME TO SPIKEHUB</p>
-                <h2>
+                <h2 className = "large-heading">
                     The one-stop shop <br/> for all things roundnet.
                 </h2>
             </div>
-            <section style = {{height: '16rem', marginTop: '19.5rem'}}>
-                <div className = 'grid three-column' style = {{position:'relative', bottom:'16rem'}}>
+            <section className = 'display-section'>
+                <div className = 'grid display-grid'>
                         <DisplayCard 
                             imgSrc = {upcomingIcon}
                             heading = "Upcoming Events" 

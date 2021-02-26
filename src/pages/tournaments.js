@@ -26,18 +26,16 @@ const TournamentsPage = () => {
     //whenever tournaments or search keyword changes, reset upcoming and past
     useEffect(() => {
         if(tournaments){
-            tournaments.docs.sort((a,b) => {
-                const dateA = new Date(a.data().date.seconds*1000)
-                const dateB = new Date(b.data().date.seconds*1000)
+            let queriedTournaments = tournaments.docs.sort((a,b) => {
+                const dateA = a.data().date.seconds
+                const dateB = b.data().date.seconds
                 if(dateA > dateB){
                     return 1
                 }
                 else{
                     return -1
                 }
-            })
-
-            const queriedTournaments = tournaments.docs.filter((tournament) => tournament.data().name.includes(keyword))
+            }).filter((tournament) => tournament.data().name.includes(keyword))
 
             const today = new Date()
             const yesterday = new Date()
@@ -71,8 +69,8 @@ const TournamentsPage = () => {
     return (
         <div style = {{backgroundColor: 'var(--red)', minHeight:'calc(100vh - 3rem)', width:'100%', display:'inline-block'}}>
             <section className = "connected-header">
-                <div style = {{display:'flex', justifyContent: 'space-between', height:'100%', padding:'0 1rem'}}>
-                    <div style = {{margin:'auto 0'}}>
+                <div className = "connected-header-content">
+                    <div className = "tournaments-heading-container">
                         <Link to = {"/tournaments/upcoming"} className = "link" onClick = {() => setCurrentTab("upcoming")}>
                             <h3 className = {`tournaments-heading ${currentTab == "upcoming" ? "selected" : ""}`}>Upcoming Events</h3>
                         </Link>
