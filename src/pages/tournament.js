@@ -150,14 +150,14 @@ const TournamentPage = ({user}) => {
 
     return (
         <div style = {{minHeight: "calc(100vh - 3rem)", backgroundColor:'var(--light-gray'}}>
-            <div className = "content" style = {{padding: '3rem 0rem'}}>
+            <div className = "content" style = {{padding: '2rem 0rem'}}>
                 {tournament && console.log(tournament.data())}
-                <h2 className = "tournaments-heading" style = {{color: '#333333', marginBottom:'1rem'}}>{tournament && tournament.data().name}</h2>
-                <h4 style = {{display:'inline-block', fontSize: '1.6rem', margin:'0'}}>{tournament && `Hosted By ${hostName}`}</h4>
+                <h2 className = "tournament-heading" >{tournament && tournament.data().name}</h2>
+                <h4 className = "tournament-subheading">{tournament && `Hosted By ${hostName}`}</h4>
             </div>
             <div className = "content tournament-info-section">
                 <div className = "tournament-sidebar">
-                    <img src = {tournament && tournament.data().img || "https://res.cloudinary.com/dicfhqxoo/image/upload/v1612321575/tournament-icon_ydpdbe.png"} style = {{width: '95%', margin:'1.5rem auto'}}></img>
+                    <img src = {tournament && tournament.data().img || "https://res.cloudinary.com/dicfhqxoo/image/upload/v1612321575/tournament-icon_ydpdbe.png"} style = {{width: '95%', margin:'0 auto 1.5rem auto'}}></img>
                     <h3>{tournament && tournament.data().location }</h3>
                     <h3 style = {{fontSize:'1.25rem', marginTop:'.5rem'}}>{tournament && formatDate(new Date(tournament.data().date.seconds*1000))}</h3>
                     <p>{tournament && tournament.data().description}</p>
@@ -184,7 +184,7 @@ const TournamentPage = ({user}) => {
                     (<>
                         <button className= "accordion-header" onClick = {() => toggleAccordion('freeAgents')}>
                             <div style = {{display:'flex'}}>
-                                <h3 style = {{display:'inline-block', paddingRight: '1rem'}}>Free Agents</h3>
+                                <h3 className = "accordion-header-label">Free Agents</h3>
                                 <Button size = "medium" color = "red" label = "Add New" styles = {{margin:'auto'}} onClick = {(e)=>{e.stopPropagation(); setIsOverlayOpen(true)}}></Button>
                             </div>
                             <h3>{isFreeAgentsOpen ? "-" : "+"}</h3>
@@ -198,7 +198,7 @@ const TournamentPage = ({user}) => {
                         </div>
                         <button className= "accordion-header" onClick = {() => toggleAccordion('schedule')}>
                             <div style = {{display:'flex'}}>
-                                <h3 style = {{display:'inline-block', paddingRight: '1rem'}}>Schedule</h3>
+                                <h3 className = "accordion-header-label">Schedule</h3>
                             </div>
                             <h3>{isScheduleOpen ? "-" : "+"}</h3>
                         </button>
@@ -217,7 +217,7 @@ const TournamentPage = ({user}) => {
                         </div>
                         <button className= "accordion-header" onClick = {() => toggleAccordion('prizes')}>
                             <div style = {{display:'flex'}}>
-                                <h3 style = {{display:'inline-block', paddingRight: '1rem'}}>Prizes</h3>
+                                <h3 className = "accordion-header-label">Prizes</h3>
                             </div>
                             <h3>{isPrizesOpen ? "-" : "+"}</h3>
                         </button>
@@ -254,7 +254,7 @@ const TournamentPage = ({user}) => {
                         </div> */}
                         <button className= "accordion-header" onClick = {() => toggleAccordion('results')}>
                             <div style = {{display:'flex'}}>
-                                <h3 style = {{display:'inline-block', paddingRight: '1rem'}}>Results</h3>
+                                <h3 className = "accordion-header-label">Results</h3>
                             </div>
                             <h3>{isResultsOpen ? "-":"+"}</h3>
                         </button>

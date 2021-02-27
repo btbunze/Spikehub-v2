@@ -111,20 +111,20 @@ const TournamentsPage = () => {
                             <table className = "past-table">
                                 <thead>
                                     <tr>
-                                        <th>Event Name</th>
-                                        <th>Location</th>
-                                        <th>Date</th>
-                                        <th># Teams</th>
+                                        <th className = "name-col">Event Name</th>
+                                        <th className = "loc-col">Location</th>
+                                        <th className = "date-col">Date</th>
+                                        <th className = "teams-col"># Teams</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {past && past.map((tournament)=>(
                                         <tr>
-                                            <td>{tournament.data().name}</td>
-                                            <td style = {{whiteSpace:'nowrap'}}>{tournament.data().location}</td>
-                                            <td style = {{whiteSpace:'nowrap'}}>{formatDate(new Date(tournament.data().date.seconds*1000))}</td>
-                                            <td>{tournament.data().numTeams}</td>
+                                            <td className = "name-col">{tournament.data().name}</td>
+                                            <td className = "loc-col" style = {{whiteSpace:'nowrap'}}>{tournament.data().location}</td>
+                                            <td className = "date-col" style = {{whiteSpace:'nowrap'}}>{formatDate(new Date(tournament.data().date.seconds*1000))}</td>
+                                            <td className = "teams-col">{tournament.data().numTeams}</td>
                                             <td>
                                                 <Link className = "link" to = {`/tournament?id=${tournament.data().slug + tournament.data().id}`}>
                                                     <Button

@@ -92,7 +92,7 @@ const HomePage = () => {
                 <h4 className = "section-subheader">Stay up-to-date and follow along with <br/> tournaments across the world</h4>
                 {console.log(tournaments)}
                 {tournaments && tournaments.docs.filter((tournament) => isSameDay(tournament.data().date)).length > 0 ? 
-                    (<div className = "grid three-column">
+                    (<div className = "grid happening-now-grid">
                         {tournaments.docs.filter((tournament) => isSameDay(tournament.data().date)).map((tournament) =>
                         (
                             <CurrentCard
