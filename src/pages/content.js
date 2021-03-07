@@ -14,8 +14,8 @@ const ContentPage = () => {
         <div style = {{backgroundColor: 'var(--red)', minHeight:'calc(100vh - 3rem)', width:'100%', display:'inline-block'}}>
             <div class = "content">
                 <p className = "small-heading">COMMUNITY CONTENT</p>
-                <h2>
-                    Everything Roundnet <br/> for your eyes and ears.
+                <h2 className = "large-heading">
+                    Everything roundnet <br/> for your eyes and ears.
                 </h2>
             </div>
             <section>

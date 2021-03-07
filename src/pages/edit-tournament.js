@@ -392,7 +392,7 @@ const EditTournamentPage = ({user}) =>{
                 </div>
 
                 <h3 className = "dash-subheader">Schedule</h3>
-                <div className = "dash-input-grid">
+                <div className = "dash-input-grid hide-on-mobile">
                     {tournamentData && Object.keys(tournamentData).length > 0 && Object.keys(schedule).length > 0 && (
                         <>
                         <div className = "input-container skinny">

@@ -20,6 +20,7 @@ const TournamentsPage = () => {
     const [upcoming, setUpcoming]= useState([])
     const [past, setPast] = useState([])
     const [keyword, setKeyword] = useState("")
+    const [searchBy, setSearchBy] = useState("Name")
 
     useEffect(() => {console.log(keyword)}, [keyword])
 
@@ -35,7 +36,26 @@ const TournamentsPage = () => {
                 else{
                     return -1
                 }
-            }).filter((tournament) => tournament.data().name.includes(keyword))
+            }).filter((tournament) => {
+                switch (searchBy){
+                    case "Name":
+                        return tournament.data().name.includes(keyword)
+                    case "Location":
+                        return tournament.data().location.includes(keyword)
+                    // case "Host":
+                    //     return db.collection("users").doc(tournament.data().host.id).get().then((doc) => {
+                    //             if(doc.exists){
+                    //                 console.log(doc.data().fName)
+                    //                 const name = doc.data().fName + " " + doc.data().lName
+                    //                 return name.includes(keyword) 
+                    //             }
+                    //         }
+                    //     )
+
+                }
+
+
+            } )
 
             const today = new Date()
             const yesterday = new Date()
@@ -52,7 +72,7 @@ const TournamentsPage = () => {
             console.log(upcoming.map((a)=> a.data()))
             console.log(past.map((a)=> a.data()))
         }
-    },[tournaments,keyword])
+    },[tournaments,keyword,searchBy])
 
     //whenever the keyword or either list changes, filter the respective list
     // useEffect(() => {
@@ -61,9 +81,6 @@ const TournamentsPage = () => {
     //         setUpcoming(tournaments.docs.filter((tournament)=> tournament.data().name.includes(keyword))
     //     }
     // },[keyword])
-
-
-
 
 
     return (
@@ -78,7 +95,14 @@ const TournamentsPage = () => {
                             <h3 className = {`tournaments-heading ${currentTab == "past" ? "selected" : ""}`}>Past Events</h3>
                         </Link>
                     </div>
-                    <SearchBar keyword = {keyword} setKeyword = {setKeyword} placeholder = {currentTab.charAt(0).toUpperCase() + currentTab.slice(1) + " Events"}/>
+                    <div className = "search-container">
+                        <select className = "search-toggle" onChange = {(e) => {setSearchBy(e.target.value)}}>
+                            <option value = "Name">Name</option>
+                            {/*<option value = "Host">Host</option>*/}
+                            <option value = "Location">Location</option>
+                        </select>
+                        <SearchBar keyword = {keyword} setKeyword = {setKeyword} placeholder = {currentTab.charAt(0).toUpperCase() + currentTab.slice(1) + " Events"}/>
+                    </div>
                 </div>
             </section>
 
