@@ -351,14 +351,14 @@ const EditTournamentPage = ({user}) =>{
                     <div className = "input-container">
                         <label className = "dash-label">Date</label>
                         <input className = "dash-input" type = "date" placeholder = "yyyy-mm-dd" id = "date"
-                            value = {Object.keys(tournamentData).length > 0 && tournamentData.date && tournamentData.date} 
+                            value = {Object.keys(tournamentData).length > 0 && tournamentData.date && tournamentData.date || ""} 
                             onChange = {(e) => {updateTournament(e.target.id, e.target.value);}}>
                         </input>
                     </div>
                     <div className = "input-container">
                         <label className = "dash-label">Registration End Date</label>
-                        <input className = "dash-input" type = "date" id = "regEndDate" 
-                            value = {Object.keys(tournamentData).length > 0 && tournamentData.regEndDate && tournamentData.regEndDate} 
+                        <input className = "dash-input" type = "date" placeholder = "yyyy-mm-dd" id = "regEndDate" 
+                            value = {Object.keys(tournamentData).length > 0 && tournamentData.regEndDate && tournamentData.regEndDate || ""} 
                             onChange = {(e) => updateTournament(e.target.id, e.target.value)}>
                         </input>
                     </div>
@@ -419,7 +419,7 @@ const EditTournamentPage = ({user}) =>{
                 <h3 className = "dash-subheader">Prizes</h3>
 
                     {tournamentData.prizes && Object.keys(tournamentData.prizes).length >0 ?
-                    <div className = "dash-input-grid">
+                    <div className = "dash-input-grid hide-on-mobile">
                         <div style = {{visibility:'hidden'}}></div>
                         <label className = "dash-label">1st</label>
                         <label className = "dash-label">2nd</label>
@@ -466,7 +466,7 @@ const EditTournamentPage = ({user}) =>{
 
                     {/*Assignment of value and onChange can be done programatically?*/}
                     {Object.keys(tournamentData.results).map((elt, index) => (
-                    <div className = "dash-input-grid"  style = {{marginBottom:'2rem'}}>
+                    <div className = "dash-input-grid hide-on-mobile"  style = {{marginBottom:'2rem'}}>
                         <label className = "dash-label" style = {{fontSize:'1rem', marginBottom:'2rem'}}>{elt} Results</label>
                         <label className = "dash-label" style = {{marginTop:'2rem'}}>Team Name</label>
                         <label className = "dash-label" style = {{marginTop:'2rem'}}>Player 1</label>

@@ -203,7 +203,7 @@ const AcctDashPage = ({user}) => {
                         <h3 className = "dash-subheader">Current Tournaments</h3>
                         <div className = "grid " style = {{margin: '2rem 0', gap: '2rem', maxWidth:'800px'}}>
                             {user && tournaments && tournaments.docs
-                                .filter((tournament)=> getTimePeriod(tournament) == "current" && tournament.data().host.id == user.uid)
+                                .filter((tournament)=> getTimePeriod(tournament) == "current" && tournament.data().owner == user.uid)
                                 .map((tournament) => (
                                     <TournamentCard tournamentName = {tournament.data().name} date = {tournament.data().date} slug = {tournament.data().slug} img = {tournament.data().img} id = {tournament.data().id}></TournamentCard>
                                 ))
@@ -212,7 +212,7 @@ const AcctDashPage = ({user}) => {
                         <h3 className = "dash-subheader">Upcoming Tournaments</h3>
                         <div className = "grid three-column" style = {{margin: '2rem 0', gap: '2rem', maxWidth:'800px'}}>
                             {user && tournaments && tournaments.docs
-                                .filter((tournament)=> getTimePeriod(tournament) == "upcoming" && tournament.data().host.id == user.uid)
+                                .filter((tournament)=> getTimePeriod(tournament) == "upcoming" && tournament.data().owner == user.uid)
                                 .map((tournament) => (
                                     <TournamentCard tournamentName = {tournament.data().name} date = {tournament.data().date} slug = {tournament.data().slug} img = {tournament.data().img} id = {tournament.data().id}></TournamentCard>
                                 ))
@@ -221,7 +221,7 @@ const AcctDashPage = ({user}) => {
                         <h3 className = "dash-subheader">Past Tournaments</h3>
                         <div className = "grid three-column" style = {{margin: '2rem 0', gap: '1rem', maxWidth:'800px'}}>
                             {user && tournaments && tournaments.docs
-                                .filter((tournament)=> getTimePeriod(tournament) == "past" && tournament.data().host.id == user.uid)
+                                .filter((tournament)=> getTimePeriod(tournament) == "past" && tournament.data().owner == user.uid)
                                 .map((tournament) => (
                                     <TournamentCard tournamentName = {tournament.data().name} date = {tournament.data().date} slug = {tournament.data().slug} img = {tournament.data().img} id = {tournament.data().id}></TournamentCard>
                                 ))
