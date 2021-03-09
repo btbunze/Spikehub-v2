@@ -66,7 +66,7 @@ const TournamentPage = ({user}) => {
                     setHostName(doc.data().fName + " " + doc.data().lName)
                 })
             }
-            if(hostType = "temp"){
+            if(hostType == "temp"){
                 setHostName(tournament.data().host.name)
             }
 

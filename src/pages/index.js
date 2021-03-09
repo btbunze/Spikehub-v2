@@ -127,8 +127,8 @@ const HomePage = () => {
                 <div className = 'grid two-column' style = {{margin:'2rem 0'}}>
                     <BlogCard
                         heading = "Spikehub 2.0 Released!"
-                        date = "1/19/2021"
-                        content = "Little blurb about the blog or whatever post this is. If it is too long for like a couple of lines, like it will be once I type the rest of this, I’ll just cut it off with an ellipse like this..."
+                        date = "3/09/2021"
+                        content = "It's finally here! This new version of Spikehub has been under construction for months, and I'm incredibly excited to present it to you. The original Spikehub came out at the end of last summer..."
                         link = "https://thespikehub.com"
                     />
                 </div>
