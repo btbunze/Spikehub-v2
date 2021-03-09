@@ -115,7 +115,7 @@ const TournamentsPage = () => {
                                     <UpcomingCard
                                         img = {tournament.data().img}
                                         tournamentName = {tournament.data().name}
-                                        date = {new Date(tournament.data().date.seconds*1000).toDateString()}
+                                        date = {formatDate(new Date(tournament.data().date.seconds*1000))}
                                         slug = {tournament.data().slug}
                                         id = {tournament.data().id}
                                     />

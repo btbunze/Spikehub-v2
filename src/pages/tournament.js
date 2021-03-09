@@ -244,9 +244,9 @@ const TournamentPage = ({user}) => {
                                             </>
                                     }
                                 })}
+                                {!prizesExist && <h4 style ={{margin:0}}>Prizes TBD</h4>}
                             </div>   
                             }
-                            {!prizesExist && <h4 style = {{margin:'-1rem 1rem 0 1rem'}}>Prizes TBD</h4>}
                      
                         </div>
                     </>) 
