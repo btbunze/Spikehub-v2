@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 const BlogCard = ({heading, date, content, link}) => {
     return(
@@ -8,7 +9,7 @@ const BlogCard = ({heading, date, content, link}) => {
             <p className = "blog-card--content">
                 {content}
             </p>
-            <a href = {link}>Read More →</a>
+            <Link to = '/news'>Read More →</Link>
         </div>
     )
 }

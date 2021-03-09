@@ -867,6 +867,33 @@ form{
   color:var(--dark-gray)
 }
 
+/*blog*/
+
+.news-content{
+  padding-top:4rem;
+}
+
+.blog-header{
+  color:var(--dark-gray);
+  font-size:2.5rem;
+  margin-top:4rem;
+  margin-bottom:2rem;
+}
+
+.blog-subheader{
+  color:var(--dark-gray);
+  margin-top:3rem;
+}
+
+.blog-content{
+  line-height:2rem;
+  margin: 2rem 0;
+}
+
+.blog-date{
+  font-size: 1.1rem
+}
+
 /*react-router-dom Link*/
 
 .link{
@@ -935,6 +962,10 @@ form{
 
   .current-card{
     width:calc(100% - 4rem)
+  }
+
+  .news-content{
+    width:90%;
   }
 }
 
@@ -1043,6 +1074,24 @@ form{
 
   .accordion-header-label{
     font-size:1.2rem;
+  }
+
+  .news-content{
+    padding-top:2rem;
+  }
+
+  .blog-header{
+    font-size:2rem;
+    margin-top:2rem;
+  }
+
+  .blog-subheader{
+    font-size:1.6rem;
+    margin-top:2rem;
+  }
+  .blog-content{
+    line-height:1.8rem;
+    margin:1.25rem 0;
   }
 }
 
@@ -1190,5 +1239,19 @@ form{
   .tournament-subheading{
     font-size:1.2rem;
     margin-bottom:0rem;
+  }
+
+  .blog-header{
+    font-size:1.5rem;
+    line-height:2rem;
+  }
+  .blog-subheader{
+    font-size:1.2rem;
+  }
+  .blog-content{
+    font-size:.8rem;
+  }
+  .blog-date{
+    font-size:.9rem;
   }
 }

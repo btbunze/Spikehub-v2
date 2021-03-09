@@ -131,12 +131,6 @@ const HomePage = () => {
                         content = "Little blurb about the blog or whatever post this is. If it is too long for like a couple of lines, like it will be once I type the rest of this, I’ll just cut it off with an ellipse like this..."
                         link = "https://thespikehub.com"
                     />
-                    <BlogCard
-                        heading = "Spikehub 2.0 Released!"
-                        date = "1/19/2021"
-                        content = "Little blurb about the blog or whatever post this is. If it is too long for like a couple of lines, like it will be once I type the rest of this, I’ll just cut it off with an ellipse like this..."
-                        link = "https://thespikehub.com"
-                    />
                 </div>
             </section>
 

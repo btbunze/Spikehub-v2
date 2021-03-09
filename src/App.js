@@ -9,6 +9,7 @@ import PodcastsPage from './pages/podcasts'
 import AdminPage from './pages/admin'
 import SignInPage from './pages/sign-in'
 import AcctDashPage from './pages/account-dashboard'
+import NewsPage from './pages/news'
 import Header from './components/header'
 import Footer from './components/footer'
 
@@ -71,6 +72,11 @@ function App() {
             <ScrollToTop/>
             <Header user = {user}/>
             <AcctDashPage user = {user} ></AcctDashPage>
+          </Route>
+          <Route path = "/news">
+            <ScrollToTop/>
+            <Header user = {user}/>
+            <NewsPage></NewsPage>
           </Route>
         </Switch>
       </Router>

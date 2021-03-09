@@ -47,6 +47,7 @@ const TournamentPage = ({user}) => {
     const [freeAgent, setFreeAgent] = useState({})
     const [profileAlert, setProfileAlert] = useState(false)
 
+    const [prizesExist, setPrizesExist] = useState(false)
     const [hostName, setHostName] = useState("")
 
     useEffect(() => {
@@ -64,6 +65,9 @@ const TournamentPage = ({user}) => {
                 db.collection("users").doc(hostId).get().then((doc) => {
                     setHostName(doc.data().fName + " " + doc.data().lName)
                 })
+            }
+            if(hostType = "temp"){
+                setHostName(tournament.data().host.name)
             }
 
             setFreeAgent({...freeAgent, division: tournament.data().divisions[0]})
@@ -153,7 +157,7 @@ const TournamentPage = ({user}) => {
             <div className = "content" style = {{padding: '2rem 0rem'}}>
                 {tournament && console.log(tournament.data())}
                 <h2 className = "tournament-heading" >{tournament && tournament.data().name}</h2>
-                <h4 className = "tournament-subheading">{tournament && `Hosted By ${hostName}`}</h4>
+                <h4 className = "tournament-subheading">{tournament && `Hosted By ${hostName }`}</h4>
             </div>
             <div className = "content tournament-info-section">
                 <div className = "tournament-sidebar">
@@ -222,21 +226,27 @@ const TournamentPage = ({user}) => {
                             <h3>{isPrizesOpen ? "-" : "+"}</h3>
                         </button>
                         <div className = {`accordion-content grid two-column ${isPrizesOpen ? "open" : ""}`} style = {{gap: '1rem', width: 'calc(100% - 2rem)'}}>
-                            {(tournament && tournament.data().prizes && Object.keys(tournament.data().prizes).length > 0)  ?
+                            {(tournament && tournament.data().prizes && Object.keys(tournament.data().prizes).length > 0) &&
                             <div className = "grid" style = {{gridTemplateColumns: 'auto auto 1fr', columnGap: '1rem', margin:'0 1rem'}}>
-                                {Object.keys(tournament.data().prizes).map((key) => (<>
-                                    <p className = "schedule-time" style = {{gridRow: 'span 3'}}>{key}</p>
-                                    <p className = "schedule-event">1st</p>
-                                    <p className = "schedule-event">{tournament.data().prizes[key][0]}</p>
-                                    <p className = "schedule-event">2nd</p>
-                                    <p className = "schedule-event">{tournament.data().prizes[key][1]}</p>
-                                    <p className = "schedule-event">3rd</p>
-                                    <p className = "schedule-event">{tournament.data().prizes[key][2]}</p>
-                                </>))}
+                                {Object.keys(tournament.data().prizes).map((key) => {
+                                    if(tournament.data().prizes[key][0] != "" && tournament.data().prizes[key][1] != "" && tournament.data().prizes[key][2] != ""){
+                                            if(prizesExist == false){
+                                                setPrizesExist(true)
+                                            }
+                                            return <>
+                                                <p className = "schedule-time" style = {{gridRow: 'span 3'}}>{key}</p>
+                                                <p className = "schedule-event">1st</p>
+                                                <p className = "schedule-event">{tournament.data().prizes[key][0]}</p>
+                                                <p className = "schedule-event">2nd</p>
+                                                <p className = "schedule-event">{tournament.data().prizes[key][1]}</p>
+                                                <p className = "schedule-event">3rd</p>
+                                                <p className = "schedule-event">{tournament.data().prizes[key][2]}</p>
+                                            </>
+                                    }
+                                })}
                             </div>   
-                            :
-                            <h4 style = {{margin:'0 1rem'}}>Prizes TBD</h4>
                             }
+                            {!prizesExist && <h4 style = {{margin:'-1rem 1rem 0 1rem'}}>Prizes TBD</h4>}
                      
                         </div>
                     </>) 
