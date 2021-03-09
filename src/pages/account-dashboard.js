@@ -8,6 +8,7 @@ import {useAuthState} from 'react-firebase-hooks/auth'
 
 import generateID from '../utilities/generateID'
 import useWindowSize from '../utilities/useWindowSize'
+import areEqual from "../utilities/areEqual"
 
 import EditTournamentPage from './edit-tournament'
 import EditOrganizationPage from './edit-organization'
@@ -55,13 +56,7 @@ const AcctDashPage = ({user}) => {
 
 
     useEffect(() => {
-        let changesMade = false;
-        for(let i of Object.keys(userData)){
-            if(userData[i] != initialUser[i]){
-                changesMade = true
-            }
-        }
-        setChangesSaved(!changesMade)
+        setChangesSaved(areEqual(userData, initialUser))
     },[userData])
 
     useEffect(() => {
@@ -190,7 +185,7 @@ const AcctDashPage = ({user}) => {
                                 <label className = "dash-label">RPR</label>
                                 <input className = "dash-input" placeholder = "" id = "rpr" maxLength = "3" value = {userData.rpr} onChange = {(e) => updateUser(e.target.id, e.target.value)}></input>
                             </div> 
-                            <Button size = "medium" color = "red" label = "Save Changes" styles = {{width: 'fit-content', marginTop:'2rem'}} onClick = {submitChanges} isDisabled = {changesSaved}></Button>
+                            <Button size = "medium" color = "red" label = "Save Changes" styles = {{width: 'fit-content', marginTop:'2rem'}} onClick = {(e) => {e.currentTarget.classList.add("loading"); submitChanges(); }} isDisabled = {changesSaved}></Button>
                         </div>
                     </Route>
                     <Route exact path = "/account-dashboard/tournaments">

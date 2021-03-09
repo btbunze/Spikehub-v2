@@ -295,7 +295,7 @@ const TournamentPage = ({user}) => {
                                     <option value = {div}>{div}</option>
                                 ))}
                             </select>
-                            <Button size = "medium" color = "red" label = "Add Yourself" onClick = {(e)=> addFreeAgent(true, e)} styles = {{marginBottom:'1rem'}}></Button>
+                            <Button size = "medium" color = "red" label = "Add Yourself" onClick = {(e)=> {e.currentTarget.classList.add("loading"); addFreeAgent(true, e)}} styles = {{marginBottom:'1rem'}}></Button>
                             {profileAlert ? <p style = {{margin:'-.5rem 0 .5rem 0', fontSize: '.7rem'}}>Make sure your profile has enough information!</p>:null}
                             <Button size = "medium" color = "red" label = "Enter Player Info" onClick = {() => setManualEntry(true)} styles = {{marginBottom:'1rem', marginRight:'1rem'}}></Button>
                             <Button size = "medium" color = "dark-gray" label = "Cancel" onClick = {() => {setIsOverlayOpen(false); setProfileAlert(false)}}></Button>
@@ -313,7 +313,7 @@ const TournamentPage = ({user}) => {
                             <input className = "dash-input"  value = {freeAgent.rpr} onChange = {(e)=> setFreeAgent({...freeAgent, rpr: e.target.value})}></input>
                             <div style = {{textAlign:'right'}}>
                                 <Button size = "medium" color = "dark-gray" label = {user ? "Back" : "Cancel"} onClick = {() => user ?  setManualEntry(false) : setIsOverlayOpen(false)} styles = {{marginRight:'1rem'}}></Button>
-                                <Button size = "medium" color = "red" label = "Submit" onClick = {(e) => addFreeAgent(false, e)} styles = {{marginBottom:'1rem'}}></Button>
+                                <Button size = "medium" color = "red" label = "Submit" onClick = {(e) => {e.currentTarget.classList.add("loading"); addFreeAgent(false, e)}} styles = {{marginBottom:'1rem'}}></Button>
                             </div>
                         </div>
                     </>)}

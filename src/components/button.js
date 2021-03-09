@@ -4,7 +4,7 @@ const Button = ({size, color, label, onClick, styles, isDisabled = false}) => {
     
     return (
         <button className = {`${size} ${color} ${isDisabled ? "disabled" : ""}`} onClick = {onClick} style = {styles} {...isDisabled && {disabled:true}}>
-            {label}
+            <span>{label}</span>
         </button>
     )
 }

@@ -99,6 +99,7 @@ h2{
 /*button*/
 
 button{
+  position:relative;
   border:none;
   outline:none;
   color:white;
@@ -142,6 +143,35 @@ button.disabled{
 
 button.disabled:hover{
   box-shadow:none;
+}
+
+button.loading>*{
+  visibility:hidden;
+}
+
+button.loading:after{
+  content: "";
+  position:absolute;
+  height:1rem;
+  width:1rem;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  margin:auto;
+  border: .25rem solid transparent;
+  border-top-color:white;
+  border-radius:50%;
+  animation:button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from{
+    transform: rotate(0turn)
+  }
+  to{
+    transform: rotate(1turn)
+  }
 }
 
 /*section*/

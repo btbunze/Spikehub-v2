@@ -10,6 +10,7 @@ import UpcomingCard from '../components/upcoming-card'
 import tourneyIcon from '../assets/ex-tourney-icon.png'
 
 import formatDate from '../utilities/formatDate'
+import useWindowSize from '../utilities/useWindowSize'
 
 const TournamentsPage = () => {
 
@@ -22,7 +23,8 @@ const TournamentsPage = () => {
     const [keyword, setKeyword] = useState("")
     const [searchBy, setSearchBy] = useState("Name")
 
-    useEffect(() => {console.log(keyword)}, [keyword])
+    const windowSize = useWindowSize()
+
 
     //whenever tournaments or search keyword changes, reset upcoming and past
     useEffect(() => {
@@ -122,18 +124,18 @@ const TournamentsPage = () => {
                                 ))}
                         </div>
                         :
-                        <h4 style = {{margin:'2rem auto'}}>No tournaments coming soon!</h4>
+                        <h4 style = {{margin:'2rem auto'}}>No tournaments found!</h4>
                     }
 
                 </section>
                 </Route>
                 <Route path = "/tournaments/past">
-                    <section style = {{padding:0}}>
+                    <section style = {{padding:0, width: "calc(90% + 2rem)"}}>
                         {past && past.length > 0 ? 
                             <table className = "past-table">
                                 <thead>
                                     <tr>
-                                        <th className = "name-col">Event Name</th>
+                                        <th className = "name-col">{windowSize.width > 550 ? "Event Name":"Past Events"}</th>
                                         <th className = "loc-col">Location</th>
                                         <th className = "date-col">Date</th>
                                         <th className = "teams-col"># Teams</th>
@@ -161,7 +163,7 @@ const TournamentsPage = () => {
                                 </tbody>
                             </table>
                             :
-                            <h4 style = {{padding:'2rem 0', margin:'0 auto'}}>No past tournaments!</h4>
+                            <h4 style = {{padding:'2rem 0', margin:'0 auto'}}>No tournaments found!</h4>
                         }
 
                     </section>

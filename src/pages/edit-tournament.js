@@ -498,10 +498,10 @@ const EditTournamentPage = ({user}) =>{
                         <Link className = "link" to= "/account-dashboard/tournaments">
                             <Button size = "medium" color = "dark-gray" label = "Cancel" styles = {{width: 'fit-content', marginTop:'1rem', marginRight:'1rem'}} ></Button>
                         </Link>
-                        <Button size = "medium" color = "red" label = {Object.keys(initialTournament).length > 0 ? "Save":"Add Tournament"} styles = {{width: 'fit-content', marginTop:'1rem', marginRight:'1rem'}} onClick = {(e) => addNewTournament(e)} isDisabled = {changesSaved}></Button> 
+                        <Button size = "medium" color = "red" label = {Object.keys(initialTournament).length > 0 ? "Save":"Add Tournament"} styles = {{width: 'fit-content', marginTop:'1rem', marginRight:'1rem'}} onClick = {(e) => {e.currentTarget.classList.add("loading"); addNewTournament(e)}} isDisabled = {changesSaved}></Button> 
 
                     </div>
-                    {Object.keys(initialTournament).length > 0 && <Button size = "medium" color = "red" label = {deleteConfirm ? "Confirm Delete":"Delete"} styles = {{width: 'fit-content', marginTop:'1rem'}} onClick = {deleteConfirm ? deleteTournament : () => setDeleteConfirm(true)}></Button>}
+                    {Object.keys(initialTournament).length > 0 && <Button size = "medium" color = "red" label = {deleteConfirm ? "Confirm Delete":"Delete"} styles = {{width: 'fit-content', marginTop:'1rem'}} onClick = {deleteConfirm ? (e) => {e.currentTarget.classList.add("loading"); deleteTournament()} : () => setDeleteConfirm(true)}></Button>}
                 </div>
                 {dataValidationError && <p style = {{fontSize:'.8rem'}}>{dataValidationError}</p>}
         </>

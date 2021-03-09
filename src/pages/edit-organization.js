@@ -174,9 +174,9 @@ const EditOrganizationPage = ({user}) =>{
                         <Link className = "link" to= "/account-dashboard/organizations">
                             <Button size = "medium" color = "dark-gray" label = "Cancel" styles = {{width: 'fit-content', marginTop:'1rem', marginRight:'1rem'}} ></Button>
                         </Link>
-                        <Button size = "medium" color = "red" label = {orgData.id ? "Save Organization":"Add Organization"} styles = {{width: 'fit-content', marginTop:'1rem'}} onClick = {(e) => addNewOrg(e)} isDisabled = {changesSaved}></Button> 
+                        <Button size = "medium" color = "red" label = {orgData.id ? "Save Organization":"Add Organization"} styles = {{width: 'fit-content', marginTop:'1rem'}} onClick = {(e) =>{e.currentTarget.classList.add("loading"); addNewOrg(e)}} isDisabled = {changesSaved}></Button> 
                     </div>
-                    {Object.keys(initialOrg).length > 0 && <Button size = "medium" color = "red" label = {deleteConfirm ? "Confirm Delete":"Delete"} styles = {{width: 'fit-content', marginTop:'1rem'}} onClick = {deleteConfirm ? deleteOrg : () => setDeleteConfirm(true)}></Button>}
+                    {Object.keys(initialOrg).length > 0 && <Button size = "medium" color = "red" label = {deleteConfirm ? "Confirm Delete":"Delete"} styles = {{width: 'fit-content', marginTop:'1rem'}} onClick = {deleteConfirm ? (e) => {e.currentTarget.classList.add("loading"); deleteOrg()} : () => setDeleteConfirm(true)}></Button>}
                 </div>
 
                 {dataValidationError && <p style = {{fontSize:'.8rem'}}>{dataValidationError}</p>}
