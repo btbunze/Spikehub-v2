@@ -39,9 +39,9 @@ const TournamentsPage = () => {
             }).filter((tournament) => {
                 switch (searchBy){
                     case "Name":
-                        return tournament.data().name.includes(keyword)
+                        return tournament.data().name.toLowerCase().includes(keyword.toLowerCase())
                     case "Location":
-                        return tournament.data().location.includes(keyword)
+                        return tournament.data().location.toLowerCase().includes(keyword.toLowerCase())
                     // case "Host":
                     //     return db.collection("users").doc(tournament.data().host.id).get().then((doc) => {
                     //             if(doc.exists){
@@ -69,8 +69,6 @@ const TournamentsPage = () => {
                 return new Date(tournament.data().date.seconds*1000) < yesterday
             }))
 
-            console.log(upcoming.map((a)=> a.data()))
-            console.log(past.map((a)=> a.data()))
         }
     },[tournaments,keyword,searchBy])
 
