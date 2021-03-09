@@ -4,6 +4,7 @@ import {Route, Link, useLocation, useHistory} from 'react-router-dom'
 import {firebase} from '../firebase/config'
 import {useCollection} from 'react-firebase-hooks/firestore'
 import generateID from '../utilities/generateID'
+import useWindowSize from '../utilities/useWindowSize'
 
 import Button from '../components/button'
 import OrgCard from '../components/edit-org-card'
@@ -17,6 +18,7 @@ const EditTournamentPage = ({user}) =>{
     const history = useHistory();
     const pathname = useLocation().pathname;
     const query = new URLSearchParams(useLocation().search)
+    const windowSize = useWindowSize()
     const db = firebase.firestore();
 
     const [userData, setUserData] = useState({})
@@ -35,6 +37,7 @@ const EditTournamentPage = ({user}) =>{
     const [tempResults, setTempResults] = useState({})
     const [schedule, setSchedule] = useState([])
     const [results, setResults] = useState({})
+    const [resultsDivision, setResultsDivision] = useState(0)
     const [prizes, setPrizes] = useState({})
 
     const [deleteConfirm, setDeleteConfirm] = useState(false)
@@ -58,6 +61,9 @@ const EditTournamentPage = ({user}) =>{
             setTournamentData({...data, date: new Date(data.date.seconds*1000).toISOString().slice(0,10), regEndDate: new Date(data.regEndDate.seconds*1000).toISOString().slice(0,10)})
             if(data.schedule){
                 setSchedule(data.schedule)
+            }
+            if(data.results){
+                setResultsDivision(Object.keys(data.results)[0])
             }
         }
     },[tournaments])
@@ -392,7 +398,7 @@ const EditTournamentPage = ({user}) =>{
                 </div>
 
                 <h3 className = "dash-subheader">Schedule</h3>
-                <div className = "dash-input-grid hide-on-mobile">
+                <div className = "dash-input-grid edit-schedule-grid">
                     {tournamentData && Object.keys(tournamentData).length > 0 && Object.keys(schedule).length > 0 && (
                         <>
                         <div className = "input-container skinny">
@@ -417,25 +423,40 @@ const EditTournamentPage = ({user}) =>{
                     <Button color = 'red' size = "medium" label = "Add Scheduled Event" styles = {{gridColumn: 'span 3'}} onClick = {() =>setSchedule([...schedule, {time:'', event: ''}])}></Button>
                 </div>
                 <h3 className = "dash-subheader">Prizes</h3>
-
                     {tournamentData.prizes && Object.keys(tournamentData.prizes).length >0 ?
-                    <div className = "dash-input-grid hide-on-mobile">
-                        <div style = {{visibility:'hidden'}}></div>
-                        <label className = "dash-label">1st</label>
-                        <label className = "dash-label">2nd</label>
-                        <label className = "dash-label">3rd</label>
-                        {tournamentData.prizes && Object.keys(tournamentData.prizes).length > 0 && Object.keys(tournamentData.prizes).map((elt, index) => (
+                        windowSize.width > 600 ? 
+                        <div className = "dash-input-grid">
+                            <div style = {{visibility:'hidden'}}></div>
+                            <label className = "dash-label">1st</label>
+                            <label className = "dash-label">2nd</label>
+                            <label className = "dash-label">3rd</label>
+                            {Object.keys(tournamentData.prizes).map((elt, index) => (
+                                <>
+                                    <label className = "dash-label" style = {{margin:'auto 0', paddingBottom:'1rem'}}>{elt}</label>
+                                    <input className = "dash-input skinny" value = {tournamentData.prizes[elt][0]} onChange = {(e) => updatePrizes(elt, 0, e.target.value)}></input>
+                                    <input className = "dash-input skinny" value = {tournamentData.prizes[elt][1]} onChange = {(e) => updatePrizes(elt, 1, e.target.value)}></input>
+                                    <input className = "dash-input skinny" value = {tournamentData.prizes[elt][2]} onChange = {(e) => updatePrizes(elt, 2, e.target.value)}></input>
+                                </>
+                            ))}
+                        </div>
+                        :
+                        Object.keys(tournamentData.prizes).map((elt, index) => (
                             <>
-                                <label className = "dash-label" style = {{margin:'auto 0', paddingBottom:'1rem'}}>{elt}</label>
-                                <input className = "dash-input skinny" value = {tournamentData.prizes[elt][0]} onChange = {(e) => updatePrizes(elt, 0, e.target.value)}></input>
-                                <input className = "dash-input skinny" value = {tournamentData.prizes[elt][1]} onChange = {(e) => updatePrizes(elt, 1, e.target.value)}></input>
-                                <input className = "dash-input skinny" value = {tournamentData.prizes[elt][2]} onChange = {(e) => updatePrizes(elt, 2, e.target.value)}></input>
+                                <label className = "dash-label" style = {{margin:'auto 0', paddingBottom:'.5rem', fontSize:'1rem'}}>{elt}</label>
+                                <div className = "dash-input-grid edit-prizes-grid">
+                                        <label className = "dash-label">1st</label>
+                                        <label className = "dash-label">2nd</label>
+                                        <label className = "dash-label">3rd</label>
+                                        <input className = "dash-input skinny" value = {tournamentData.prizes[elt][0]} onChange = {(e) => updatePrizes(elt, 0, e.target.value)}></input>
+                                        <input className = "dash-input skinny" value = {tournamentData.prizes[elt][1]} onChange = {(e) => updatePrizes(elt, 1, e.target.value)}></input>
+                                        <input className = "dash-input skinny" value = {tournamentData.prizes[elt][2]} onChange = {(e) => updatePrizes(elt, 2, e.target.value)}></input>
+                                </div>
                             </>
-                        ))}
-                    </div>
-                    :
-                    <p className = "input-container-wide">Add divisions to edit prizes!</p>}
+                        ))
 
+                    :
+                    <p className = "input-container-wide">Add divisions to edit prizes!</p>
+                    }
                 <h3 className = "dash-subheader">Happening-Now Links</h3>
                 <div className = "dash-input-grid">
                     <div className = "input-container">
@@ -463,9 +484,10 @@ const EditTournamentPage = ({user}) =>{
                                 <input className = "dash-input"></input>
                         </div>
                     </div>
-
                     {/*Assignment of value and onChange can be done programatically?*/}
-                    {Object.keys(tournamentData.results).map((elt, index) => (
+
+                    {windowSize.width > 600 ? 
+                    Object.keys(tournamentData.results).map((elt, index) => (
                     <div className = "dash-input-grid hide-on-mobile"  style = {{marginBottom:'2rem'}}>
                         <label className = "dash-label" style = {{fontSize:'1rem', marginBottom:'2rem'}}>{elt} Results</label>
                         <label className = "dash-label" style = {{marginTop:'2rem'}}>Team Name</label>
@@ -487,7 +509,44 @@ const EditTournamentPage = ({user}) =>{
                         <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[elt][3][1]} onChange = {(e) => updateResults(elt, 3, 1, e.target.value)}></input>
                         <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[elt][3][2]} onChange = {(e) => updateResults(elt, 3, 2, e.target.value)}></input>
                     </div>
-                    ))}
+                    ))
+                    :
+                    <>
+                        <div className = "grid" style = {{gridTemplateColumns:'1fr 1fr 1fr', gap: '.5rem', paddingTop:'.5rem'}}>
+                            {Object.keys(tournamentData.results).map((elt) =>(
+                                <button className = {`results-division-toggle ${resultsDivision == elt ? "selected" : null}`} onClick = {()=> setResultsDivision(elt)}>{elt}</button>
+                            ))
+                            }
+                        </div>
+                        <label className = 'dash-label' style = {{paddingBottom:'.5rem', paddingTop:'1.5rem', fontSize:'1rem'}}>1st Place</label>
+                        <div className = "dash-input-grid edit-results-grid">
+                            <label className = "dash-label">Team Name</label>
+                            <input className = "dash-input normal" maxLength = "30" value = {tournamentData.results[resultsDivision][1][0]} onChange = {(e) => updateResults(resultsDivision, 1, 0, e.target.value)}></input>
+                            <label className = "dash-label" >Player 1</label>
+                            <label className = "dash-label" >Player 2</label>
+                            <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[resultsDivision][1][1]} onChange = {(e) => updateResults(resultsDivision, 1, 1, e.target.value)}></input>
+                            <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[resultsDivision][1][2]} onChange = {(e) => updateResults(resultsDivision, 1, 2, e.target.value)}></input>
+                        </div>
+                        <label className = 'dash-label' style = {{paddingBottom:'.5rem', paddingTop:'1.5rem', fontSize:'1rem'}}>2nd Place</label>
+                        <div className = "dash-input-grid edit-results-grid">
+                            <label className = "dash-label">Team Name</label>
+                            <input className = "dash-input normal" maxLength = "30" value = {tournamentData.results[resultsDivision][2][0]} onChange = {(e) => updateResults(resultsDivision, 2, 0, e.target.value)}></input>
+                            <label className = "dash-label" >Player 1</label>
+                            <label className = "dash-label" >Player 2</label>
+                            <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[resultsDivision][2][1]} onChange = {(e) => updateResults(resultsDivision, 2, 1, e.target.value)}></input>
+                            <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[resultsDivision][2][2]} onChange = {(e) => updateResults(resultsDivision, 2, 2, e.target.value)}></input>
+                        </div>
+                        <label className = 'dash-label' style = {{paddingBottom:'.5rem', paddingTop:'1.5rem', fontSize:'1rem'}}>3rd Place</label>
+                        <div className = "dash-input-grid edit-results-grid"  style = {{marginBottom:'2rem'}}>
+                            <label className = "dash-label">Team Name</label>
+                            <input className = "dash-input normal" maxLength = "30" value = {tournamentData.results[resultsDivision][3][0]} onChange = {(e) => updateResults(resultsDivision, 3, 0, e.target.value)}></input>
+                            <label className = "dash-label" >Player 1</label>
+                            <label className = "dash-label" >Player 2</label>
+                            <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[resultsDivision][3][1]} onChange = {(e) => updateResults(resultsDivision, 3, 1, e.target.value)}></input>
+                            <input className = "dash-input skinny" maxLength = "30" value = {tournamentData.results[resultsDivision][3][2]} onChange = {(e) => updateResults(resultsDivision, 3, 2, e.target.value)}></input>
+                        </div>
+                    </>
+                    }
                     </>
                 :
                 <p className = "input-container-wide" style = {{marginTop:'0'}}>Add divisions to edit results!</p>

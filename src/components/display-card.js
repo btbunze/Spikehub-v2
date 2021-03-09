@@ -4,7 +4,7 @@ import Button from './button'
 
 const DisplayCard = ({imgSrc, altText, heading, content, link, comingSoon}) => {
     return (
-        <div className = "gen-card animated-card">
+        <div className = {`gen-card animated-card ${comingSoon ? "hide-at-midsize" : null}`}>
             <div>
                 <img src = {imgSrc} alt = {altText} width = "50%" style = {{paddingBottom:'1rem'}}></img>
                 <h3>{heading}</h3>

@@ -800,6 +800,29 @@ textarea{
   min-width: calc(100% - 1rem - 2px);
 }
 
+.results-division-toggle{
+  color:var(--dark-gray);
+  background-color:white;
+  border: 1px solid var(--dark-gray);
+  height:2rem;
+  border-radius:.5rem .5rem 0 0;
+}
+
+button.results-division-toggle:hover{
+  box-shadow:none;
+  background-color:var(--light-gray);
+}
+
+.results-division-toggle.selected{
+  background-color:var(--dark-gray);
+  color:white;
+}
+
+.results-division-toggle.selected:hover{
+  box-shadow:none;
+  background-color:var(--dark-gray);
+}
+
 /*form*/
 form{
   display:grid;
@@ -908,6 +931,16 @@ form{
 
   .tournament-heading,.tournament-subheading{
     text-align:center;
+  }
+
+  .current-card{
+    width:calc(100% - 4rem)
+  }
+}
+
+@media (max-width:1016px) and (min-width: 685px){
+  .gen-card.hide-at-midsize{
+    display:none;
   }
 }
 
@@ -1070,6 +1103,34 @@ form{
     grid-template-columns: 1fr 1fr;
   }
 
+  div.edit-schedule-grid{
+    grid-template-columns: 1fr 1fr 1fr 1.5rem;
+    column-gap:.5rem
+  }
+
+  div.edit-prizes-grid{
+    position:relative;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom:1.5rem;
+  }
+
+  .edit-prizes-grid:after, .edit-results-grid:after{
+    content: "";
+    width:90%;
+    height:1px;
+    position:absolute;
+    bottom:-.5rem;
+    left:0;
+    right:0;
+    margin:auto;
+    background-color:var(--dark-gray)
+  }
+
+  div.edit-results-grid{
+    position:relative;
+    grid-template-columns: 1fr 1fr
+  }
+
   .input-container.wide{
     grid-column: span 2;
   }
@@ -1096,7 +1157,7 @@ form{
   }
 
   .current-card{
-    padding:1rem 0;
+    padding:2.5rem 0;
   }
 
   .connected-header{
