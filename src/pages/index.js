@@ -108,7 +108,7 @@ const HomePage = () => {
                     <div className = "no-tournaments">
                     {tournaments && tournaments.docs.length > 0 ?
                         <>
-                            <h4 style = {{margin:'0 auto'}}>Come back on <b>{formatDate(new Date(getSoonestTournaments(tournaments.docs)[0].data().date.seconds*1000))}</b> for the next event{tournaments && getSoonestTournaments(tournaments.docs).length > 1 ? "s" : null}</h4>
+                            <h4 style = {{margin:'0 auto'}}>Come back on <br/><b>{formatDate(new Date(getSoonestTournaments(tournaments.docs)[0].data().date.seconds*1000))}</b><br/> for the next event{tournaments && getSoonestTournaments(tournaments.docs).length > 1 ? "s" : null}</h4>
                             <div style = {{marginTop:'2rem', display:'flex', alignItems:'center', justifyContent:'center'}}>
                                 {tournaments && getSoonestTournaments(tournaments.docs).map((tournament)=> 
                                     <img src = {tournament.data().img} style = {{width:'10rem', margin:'0 1rem'}}></img>

@@ -196,7 +196,7 @@ const AcctDashPage = ({user}) => {
                             </Link>
                         </div>
                         <h3 className = "dash-subheader">Current Tournaments</h3>
-                        <div className = "grid " style = {{margin: '2rem 0', gap: '2rem', maxWidth:'800px'}}>
+                        <div className = "grid three-column" style = {{margin: '2rem 0', gap: '2rem', maxWidth:'800px'}}>
                             {user && tournaments && tournaments.docs
                                 .filter((tournament)=> getTimePeriod(tournament) == "current" && tournament.data().owner == user.uid)
                                 .map((tournament) => (
