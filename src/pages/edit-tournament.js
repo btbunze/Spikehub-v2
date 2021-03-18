@@ -111,6 +111,7 @@ const EditTournamentPage = ({user}) =>{
                     }
                 })
                 updateTournament("results", tempResults)
+                setResultsDivision(Object.keys(tempResults)[0])
             }
         }
 
@@ -128,6 +129,7 @@ const EditTournamentPage = ({user}) =>{
                 emptyResults[division] = {1:["","",""],2:["","",""],3:["","",""]}
             })
             updateTournament("results", emptyResults)
+            setResultsDivision(Object.keys(emptyResults)[0])
         }
 
         const changesMade = !areEqual(tournamentData, initialTournament) || tempImg
@@ -518,6 +520,7 @@ const EditTournamentPage = ({user}) =>{
                             ))
                             }
                         </div>
+                        {console.log(resultsDivision)}
                         <label className = 'dash-label' style = {{paddingBottom:'.5rem', paddingTop:'1.5rem', fontSize:'1rem'}}>1st Place</label>
                         <div className = "dash-input-grid edit-results-grid">
                             <label className = "dash-label">Team Name</label>
