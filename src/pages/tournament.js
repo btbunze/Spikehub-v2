@@ -167,7 +167,7 @@ const TournamentPage = ({user}) => {
                     <p>{tournament && tournament.data().description}</p>
                     {tournament && new Date(tournament.data().date.seconds*1000) > new Date() &&
                     <>
-                        {new Date(tournament.data().regEndDate.seconds*1000) > new Date() ? 
+                        {new Date(tournament.data().regEndDate.seconds*1000).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0)? 
                         <>
                             {tournament.data().link ? 
                             <a href = {tournament && tournament.data().link} className = "link" target = "_blank"><Button size = "large" color = "red" label = "Register"></Button></a>
