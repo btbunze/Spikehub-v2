@@ -49,7 +49,7 @@ const HomePage = () => {
             const soonestDate = new Date(sortedUpcoming[0].data().date.seconds*1000);
         
             return sortedUpcoming.filter((tournament) => {
-                return new Date(tournament.data().date.seconds*1000).getTime() == soonestDate.getTime();
+                return new Date(tournament.data().date.seconds*1000).setHours(0,0,0,0) == soonestDate.setHours(0,0,0,0);
             })
         }
 
@@ -87,10 +87,9 @@ const HomePage = () => {
                         />
                 </div>
             </section>
-            <section>
+            <section style = {{height:'auto'}}>
                 <h2 className = "section-header">Happening Now</h2>
                 <h4 className = "section-subheader">Stay up-to-date and follow along with <br/> tournaments across the world</h4>
-                {console.log(tournaments)}
                 {tournaments && tournaments.docs.filter((tournament) => isSameDay(tournament.data().date)).length > 0 ? 
                     (<div className = "grid happening-now-grid">
                         {tournaments.docs.filter((tournament) => isSameDay(tournament.data().date)).map((tournament) =>
@@ -109,9 +108,10 @@ const HomePage = () => {
                     {tournaments && tournaments.docs.length > 0 ?
                         <>
                             <h4 style = {{margin:'0 auto'}}>Come back on <br/><b>{formatDate(new Date(getSoonestTournaments(tournaments.docs)[0].data().date.seconds*1000))}</b><br/> for the next event{tournaments && getSoonestTournaments(tournaments.docs).length > 1 ? "s" : null}</h4>
-                            <div style = {{marginTop:'2rem', display:'flex', alignItems:'center', justifyContent:'center'}}>
-                                {tournaments && getSoonestTournaments(tournaments.docs).map((tournament)=> 
-                                    <img src = {tournament.data().img} style = {{width:'10rem', margin:'0 1rem'}}></img>
+                            <div style = {{marginTop:'2rem', display:'flex', alignItems:'center', flexWrap:'wrap', justifyContent:'center'}}>
+                                {tournaments && getSoonestTournaments(tournaments.docs).map((tournament)=> (
+                                        <>{tournament.data().img ? <img src = {tournament.data().img} style = {{width:'12rem', margin:'.5rem'}}></img> : null}</>
+                                    )
                                 )}
                             </div>
                         </>

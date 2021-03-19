@@ -344,7 +344,6 @@ h5{
 /*happening now widget*/
 
 .no-tournaments{
-  height:20rem;
   display:flex;
   flex-direction:column;
   justify-content: center;
