@@ -56,8 +56,8 @@ const AcctDashPage = ({user}) => {
 
 
     useEffect(() => {
-        setChangesSaved(areEqual(userData, initialUser))
-    },[userData])
+        setChangesSaved(areEqual(userData, initialUser) && !tempImg)
+    },[userData,tempImg])
 
     useEffect(() => {
         if(window.width < 800){
