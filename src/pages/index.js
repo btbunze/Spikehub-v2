@@ -62,29 +62,6 @@ const HomePage = () => {
                     The one-stop shop <br/> for all things roundnet.
                 </h2>
             </div>
-            <section className = 'display-section'>
-                <div className = 'grid display-grid'>
-                        <DisplayCard 
-                            imgSrc = {upcomingIcon}
-                            heading = "Upcoming Events" 
-                            content = "Find a partner and sign up for a tournament"
-                            link = "/tournaments/upcoming"
-                        />
-                        <DisplayCard
-                            imgSrc = {pastIcon}
-                            heading = "Past Events"
-                            content = "See results and info from past tournaments"
-                            link = "/tournaments/past"
-                        />
-                        <DisplayCard
-                            imgSrc = {contentIcon}
-                            heading = "Community Content"
-                            content = "Find the best podcasts, highlight videos, and more"
-                            link = "/content"
-                            comingSoon = 'true'
-                        />
-                </div>
-            </section>
             <section style = {{height:'auto'}}>
                 <h2 className = "section-header">Happening Now</h2>
                 <h4 className = "section-subheader">Stay up-to-date and follow along with <br/> tournaments across the world</h4>
@@ -118,6 +95,29 @@ const HomePage = () => {
                         }
                     </div>
                 } 
+            </section>
+            <section className = 'display-section'>
+                <div className = 'grid display-grid'>
+                        <DisplayCard 
+                            imgSrc = {upcomingIcon}
+                            heading = "Upcoming Events" 
+                            content = "Find a partner and sign up for a tournament"
+                            link = "/tournaments/upcoming"
+                        />
+                        <DisplayCard
+                            imgSrc = {pastIcon}
+                            heading = "Past Events"
+                            content = "See results and info from past tournaments"
+                            link = "/tournaments/past"
+                        />
+                        <DisplayCard
+                            imgSrc = {contentIcon}
+                            heading = "Community Content"
+                            content = "Find the best podcasts, highlight videos, and more"
+                            link = "/content"
+                            comingSoon = 'true'
+                        />
+                </div>
             </section>
             <section>
                 <h2 className = "section-header">Spikehub News</h2>
