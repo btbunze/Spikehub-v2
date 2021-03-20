@@ -345,6 +345,7 @@ h5{
 
 .no-tournaments{
   display:flex;
+  min-height:20rem;
   flex-direction:column;
   justify-content: center;
   

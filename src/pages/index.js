@@ -23,12 +23,10 @@ const HomePage = () => {
     //TODO: Make more flexible to compare any two dates
     const isSameDay = (date) => {
 
-        const tourneyDate = new Date(date.seconds*1000);
+        const tourneyDate = new Date(date.seconds*1000).setHours(0,0,0,0)
+        const today = new Date().setHours(0,0,0,0)
 
-        const today = new Date()
-        today.setHours(0,0,0,0)
-
-        return tourneyDate.getTime() == today.getTime();
+        return tourneyDate == today;
     }
 
     const getSoonestTournaments = (tArray) => {
