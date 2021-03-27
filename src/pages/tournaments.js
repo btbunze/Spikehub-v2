@@ -6,11 +6,14 @@ import {useCollection} from 'react-firebase-hooks/firestore'
 import SearchBar from '../components/search-bar'
 import Button from '../components/button'
 import UpcomingCard from '../components/upcoming-card'
+import WrappedMap from '../components/map' 
 
 import tourneyIcon from '../assets/ex-tourney-icon.png'
 
 import formatDate from '../utilities/formatDate'
 import useWindowSize from '../utilities/useWindowSize'
+
+
 
 const TournamentsPage = () => {
 
@@ -70,7 +73,6 @@ const TournamentsPage = () => {
             setPast(queriedTournaments.filter((tournament) => {
                 return new Date(tournament.data().date.seconds*1000) < yesterday
             }))
-
         }
     },[tournaments,keyword,searchBy])
 
@@ -107,6 +109,16 @@ const TournamentsPage = () => {
             </section>
 
                 <Route path = "/tournaments/upcoming" >
+                {/* <section style = {{backgroundColor:'transparent', boxShadow:'none', padding:'0px'}}>
+                    <div style = {{height:'400px', width:'100%', margin:'auto'}}>
+                        <WrappedMap
+                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyB5BjgJtCv_q0hTfHu1vBHTt3u6EN0INzw"
+                            loadingElement = {<div style = {{height:'100%'}}/>}
+                            containerElement = {<div style = {{height:'100%'}}/>}
+                            mapElement = {<div style = {{height:'100%'}}/>}
+                        />
+                    </div>
+                </section> */}
                 <section>
                     {upcoming && upcoming.length > 0 ? 
                         <div className = "grid four-column" style = {{margin: '1rem', gap:'1rem', width: 'calc(100% - 2rem)'}}>
