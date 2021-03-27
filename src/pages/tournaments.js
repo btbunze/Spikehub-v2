@@ -112,7 +112,7 @@ const TournamentsPage = () => {
                 {/* <section style = {{backgroundColor:'transparent', boxShadow:'none', padding:'0px'}}>
                     <div style = {{height:'400px', width:'100%', margin:'auto'}}>
                         <WrappedMap
-                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyB5BjgJtCv_q0hTfHu1vBHTt3u6EN0INzw"
+                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key="
                             loadingElement = {<div style = {{height:'100%'}}/>}
                             containerElement = {<div style = {{height:'100%'}}/>}
                             mapElement = {<div style = {{height:'100%'}}/>}
